@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="data:," />
+    <title>Your call is booked.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #080808;
+        --cream: #f6f5ed;
+        --gold: #d7ac75;
+        --cream-soft: rgba(246, 245, 237, 0.68);
+        --cream-faint: rgba(246, 245, 237, 0.52);
+        --frame: #101010;
+        --frame-line: rgba(246, 245, 237, 0.09);
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--cream);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        min-height: 100vh;
+        min-height: 100dvh;
+      }
+
+      main {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: clamp(64px, 11vh, 112px) 24px clamp(72px, 12vh, 120px);
+        text-align: center;
+      }
+
+      .rule {
+        width: 40px;
+        height: 1px;
+        background: var(--gold);
+        opacity: 0.85;
+        margin: 0 auto 36px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(34px, 6.4vw, 46px);
+        line-height: 1.12;
+        font-weight: 600;
+        letter-spacing: -0.025em;
+        color: var(--cream);
+      }
+
+      .confirmation {
+        margin: 22px auto 0;
+        max-width: 520px;
+        font-size: clamp(17px, 2.6vw, 19px);
+        line-height: 1.55;
+        font-weight: 400;
+        color: var(--cream);
+      }
+
+      .review {
+        margin: 16px auto 0;
+        max-width: 520px;
+        font-size: clamp(15.5px, 2.4vw, 17px);
+        line-height: 1.6;
+        font-weight: 400;
+        color: var(--cream-soft);
+      }
+
+      .video-section {
+        margin-top: clamp(52px, 8vh, 72px);
+      }
+
+      .video-label {
+        margin: 0 0 20px;
+        font-size: clamp(15.5px, 2.4vw, 17px);
+        line-height: 1.55;
+        font-weight: 500;
+        color: var(--cream);
+      }
+
+      .video-frame {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: var(--frame);
+        border: 1px solid var(--frame-line);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+
+      .video-frame iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+      }
+
+      .finished {
+        margin-top: 28px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .finished p {
+        margin: 0;
+        font-size: clamp(15.5px, 2.4vw, 17px);
+        line-height: 1.55;
+        font-weight: 400;
+        color: var(--cream-soft);
+      }
+
+      .confirm-btn {
+        font: inherit;
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        color: var(--gold);
+        background: transparent;
+        border: 1px solid rgba(215, 172, 117, 0.45);
+        border-radius: 999px;
+        padding: 10px 22px;
+        cursor: pointer;
+        transition: background 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
+      }
+
+      .confirm-btn:hover {
+        background: rgba(215, 172, 117, 0.08);
+        border-color: rgba(215, 172, 117, 0.7);
+      }
+
+      .confirm-btn:focus-visible {
+        outline: 2px solid var(--gold);
+        outline-offset: 3px;
+      }
+
+      .confirm-btn[aria-expanded="true"] {
+        opacity: 0.55;
+        cursor: default;
+      }
+
+      .full-video {
+        margin-top: 40px;
+        overflow: hidden;
+        transition: opacity 0.55s ease, transform 0.55s ease, max-height 0.55s ease, margin-top 0.55s ease;
+      }
+
+      .full-video.is-collapsed {
+        margin-top: 0;
+        opacity: 0;
+        transform: translateY(10px);
+        visibility: hidden;
+      }
+
+      .full-video-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px 34px;
+        background: var(--gold);
+        color: #080808;
+        font-size: clamp(15.5px, 2.4vw, 17px);
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        line-height: 1.3;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: background 0.25s ease, transform 0.25s ease;
+      }
+
+      .full-video-link:hover {
+        background: #e3bc85;
+      }
+
+      .full-video-link:focus-visible {
+        outline: 2px solid var(--cream);
+        outline-offset: 3px;
+      }
+
+      .full-video-note {
+        margin: 18px auto 0;
+        max-width: 520px;
+        font-size: clamp(15.5px, 2.4vw, 17px);
+        line-height: 1.6;
+        font-weight: 400;
+        color: var(--cream-soft);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .full-video,
+        .confirm-btn,
+        .full-video-link {
+          transition: none;
+        }
+      }
+
+      .closing {
+        margin-top: clamp(52px, 8vh, 72px);
+      }
+
+      .closing p {
+        margin: 0;
+        font-size: clamp(15.5px, 2.4vw, 17px);
+        line-height: 1.6;
+        font-weight: 400;
+        color: var(--cream-faint);
+      }
+
+      .closing p + p {
+        margin-top: 10px;
+      }
+
+      .closing .signoff {
+        margin-top: 30px;
+        font-size: clamp(18px, 2.8vw, 20px);
+        line-height: 1.5;
+        font-weight: 500;
+        color: var(--cream);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="rule" aria-hidden="true"></div>
+
+      <h1>Your call is booked.</h1>
+
+      <p class="confirmation" id="confirmation">Your private call is confirmed.</p>
+
+      <p class="review">I'll personally review your answers before we meet.</p>
+
+      <section class="video-section">
+        <p class="video-label">Watch this 90 second video now.</p>
+        <div class="video-frame">
+          <iframe
+            src="https://www.loom.com/embed/2fa8dc0ce6094a6eab602e3a2b4d0785"
+            title="Watch this 90 second video now."
+            frameborder="0"
+            webkitallowfullscreen
+            mozallowfullscreen
+            allowfullscreen
+            allow="fullscreen"
+          ></iframe>
+        </div>
+
+        <div class="finished">
+          <p>Finished watching?</p>
+          <button type="button" class="confirm-btn" id="watched-btn" aria-expanded="false" aria-controls="full-video">I've watched it</button>
+        </div>
+
+        <div class="full-video" id="full-video">
+          <a class="full-video-link" href="https://www.youtube.com/watch?v=2VQxR9YcI3g&amp;list=PLgF4kdpgcYIbQIrkT1h9aXAHGWs00AFOS&amp;index=2&amp;t=1s" target="_blank" rel="noopener noreferrer">Watch the full video</a>
+          <p class="full-video-note">Watch this entire video before we meet.</p>
+        </div>
+      </section>
+
+      <section class="closing">
+        <p>Expect a few reminder emails.</p>
+        <p>Find somewhere quiet to speak with me.</p>
+        <p class="signoff">Talk soon.</p>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        var name = (params.get("name") || "").trim();
+        var when = (params.get("when") || "").trim();
+        if (name && when) {
+          var el = document.getElementById("confirmation");
+          el.textContent = name + " \u2014 your call is confirmed for " + when + ".";
+        }
+
+        var btn = document.getElementById("watched-btn");
+        var block = document.getElementById("full-video");
+        if (btn && block) {
+          block.classList.add("is-collapsed");
+          block.style.maxHeight = "0px";
+          block.setAttribute("aria-hidden", "true");
+
+          btn.addEventListener("click", function () {
+            if (btn.getAttribute("aria-expanded") === "true") return;
+            btn.setAttribute("aria-expanded", "true");
+            block.setAttribute("aria-hidden", "false");
+            block.classList.remove("is-collapsed");
+            block.style.maxHeight = block.scrollHeight + "px";
+            window.setTimeout(function () {
+              block.style.maxHeight = "";
+            }, 600);
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

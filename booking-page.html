@@ -1,0 +1,2417 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="data:," />
+    <title>Book a Private Call — Coach Raph</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #101010;
+        --surface: #161616;
+        --cream: #f6f5ed;
+        --body: #cfc9ba;
+        --muted: #a89f8d;
+        --micro: #8a8375;
+        --gold: #c9a35f;
+        --border: #262626;
+        --border-2: #2c2c2c;
+        --frame: rgba(246, 245, 237, 0.09);
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body { margin: 0; padding: 0; }
+
+      body {
+        background: var(--bg);
+        color: var(--cream);
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      /* ---------- Hairline frame (printed-invitation edge) ---------- */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 14px;
+        border: 1px solid var(--frame);
+        pointer-events: none;
+        z-index: 50;
+      }
+
+      .page {
+        max-width: 620px;
+        margin: 0 auto;
+        padding: 44px 32px 80px;
+      }
+
+      /* ---------- Eyebrow ---------- */
+      .eyebrow {
+        margin: 0 0 34px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        text-align: center;
+        color: var(--muted);
+        line-height: 1.9;
+      }
+
+      /* ---------- Pain headline ---------- */
+      h1 {
+        margin: 0;
+        font-weight: 800;
+        line-height: 1.18;
+        letter-spacing: -0.02em;
+        text-align: center;
+        text-wrap: balance;
+        font-size: clamp(30px, 7.6vw, 44px);
+        color: var(--cream);
+      }
+
+      h1 .hl { color: var(--gold); }
+
+      /* ---------- Door line ---------- */
+      .door {
+        margin: 38px 0 0;
+        font-size: 17.5px;
+        line-height: 1.65;
+        font-weight: 400;
+        text-align: center;
+        color: var(--cream);
+      }
+
+      .door-skill {
+        display: block;
+        margin-top: 16px;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+
+      /* ---------- Stakes line (above the time-picker) ---------- */
+      .stakes-line {
+        margin: 30px auto 0;
+        max-width: 540px;
+        font-size: 13.5px;
+        font-weight: 500;
+        line-height: 1.7;
+        text-align: center;
+        text-wrap: balance;
+        color: var(--muted);
+      }
+
+      .stakes-close {
+        margin: 8px auto 0;
+        max-width: 540px;
+        font-size: 13.5px;
+        font-weight: 600;
+        line-height: 1.7;
+        text-align: center;
+        text-wrap: balance;
+        color: var(--cream);
+      }
+
+      /* ---------- Rotating calm headline ---------- */
+      .calm-head {
+        margin: 64px 0 0;
+        font-weight: 900;
+        text-transform: uppercase;
+        text-align: center;
+        line-height: 1.08;
+        letter-spacing: -0.02em;
+        font-size: clamp(34px, 9.5vw, 46px);
+        color: var(--cream);
+      }
+
+      .calm-head .calm-fixed { display: block; }
+
+      .calm-head .rotator {
+        display: block;
+        color: var(--gold);
+      }
+
+      .calm-head .rot-word {
+        display: inline-block;
+        width: 7.6em;
+        height: 1.12em;
+        line-height: 1.12em;
+        white-space: nowrap;
+        text-align: center;
+        vertical-align: top;
+        opacity: 1;
+        transition: opacity 0.45s ease;
+      }
+
+      .calm-head .rot-word.fading { opacity: 0; }
+
+      /* ---------- Video (cropped to the 25%–79% band of the 9:16 source) ---------- */
+      .video-wrap {
+        position: relative;
+        margin: 72px auto 0;
+        width: 100%;
+        max-width: 360px;
+        aspect-ratio: 720 / 690;
+        border: 1px solid var(--border-2);
+        border-radius: 8px;
+        overflow: hidden;
+        background: #000;
+      }
+
+      .video-wrap iframe {
+        position: absolute;
+        left: 0;
+        top: -45.8%;
+        width: 100%;
+        height: 185.5%;
+        border: 0;
+      }
+
+      /* ---------- Under-video CTA ---------- */
+      .video-cta {
+        margin: 28px auto 0;
+        text-align: center;
+      }
+
+      .video-cta-btn {
+        appearance: none;
+        -webkit-appearance: none;
+        font-family: inherit;
+        display: inline-block;
+        padding: 17px 20px;
+        background: var(--gold);
+        color: #101010;
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        text-align: center;
+        border: 0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: filter 0.15s ease, transform 0.12s ease, opacity 0.2s ease;
+      }
+
+      .video-cta-btn:hover { filter: brightness(1.08); }
+
+      .video-cta-btn:focus-visible {
+        outline: 2px solid var(--cream);
+        outline-offset: 3px;
+      }
+
+      /* ---------- Sticky return bar ---------- */
+      .sticky-bar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 60;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+        background: #161616;
+        background: rgba(22, 22, 22, 0.97);
+        border-top: 1px solid rgba(201, 163, 95, 0.55);
+        transform: translateY(110%);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+      }
+
+      .sticky-bar.show {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .sticky-pick {
+        display: none;
+        min-width: 0;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.4;
+        color: var(--muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .sticky-pick.show { display: block; }
+
+      .sticky-btn {
+        appearance: none;
+        -webkit-appearance: none;
+        font-family: inherit;
+        flex: none;
+        padding: 17px 20px;
+        background: var(--gold);
+        color: #101010;
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        text-align: center;
+        border: 0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: filter 0.15s ease, transform 0.12s ease;
+      }
+
+      .sticky-btn:hover { filter: brightness(1.08); }
+
+      .sticky-btn:focus-visible {
+        outline: 2px solid var(--cream);
+        outline-offset: 3px;
+      }
+
+      @media (max-width: 480px) {
+        .sticky-bar { justify-content: space-between; }
+        .sticky-bar.no-pick { justify-content: center; }
+        .video-cta-btn { width: 100%; max-width: 360px; }
+      }
+
+      /* ---------- Gold rule ---------- */
+      .gold-rule {
+        width: 56px;
+        height: 1px;
+        background: var(--gold);
+        margin: 88px auto 0;
+      }
+
+      /* ---------- The letter ---------- */
+      .letter { margin-top: 84px; }
+
+      .letter .letter-lead {
+        margin: 0 0 40px;
+        font-size: 26px;
+        font-weight: 700;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
+        color: var(--cream);
+      }
+
+      .letter p {
+        margin: 0 0 26px;
+        font-size: 16.5px;
+        font-weight: 400;
+        line-height: 1.85;
+        color: var(--body);
+      }
+
+      .letter p .gold { color: var(--gold); }
+
+      .letter .letter-strong {
+        font-weight: 700;
+        color: var(--cream);
+      }
+
+      .letter-steps {
+        margin: 34px 0 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: step;
+      }
+
+      .letter-steps li {
+        counter-increment: step;
+        position: relative;
+        margin: 0 0 24px;
+        padding-left: 40px;
+        font-size: 16.5px;
+        line-height: 1.8;
+        color: var(--body);
+      }
+
+      .letter-steps li:last-child { margin-bottom: 0; }
+
+      .letter-steps li::before {
+        content: counter(step);
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-weight: 800;
+        color: var(--gold);
+      }
+
+      /* ---------- Booking flow ---------- */
+      .book {
+        margin-top: 96px;
+        padding-top: 72px;
+        border-top: 1px solid var(--border);
+      }
+
+      .book h2 {
+        margin: 0;
+        font-size: clamp(24px, 6vw, 30px);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1.25;
+        text-align: center;
+        text-wrap: balance;
+        color: var(--cream);
+      }
+
+      .book-frame {
+        margin: 16px 0 0;
+        font-size: 11.5px;
+        font-weight: 600;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      .day-cards {
+        margin-top: 44px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .day-card {
+        appearance: none;
+        -webkit-appearance: none;
+        font-family: inherit;
+        position: relative;
+        overflow: hidden;
+        background: var(--surface);
+        border: 1px solid var(--border-2);
+        border-radius: 10px;
+        padding: 20px 18px;
+        cursor: pointer;
+        text-align: left;
+        transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+      }
+
+      .day-card > span { position: relative; z-index: 1; }
+
+      .day-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(201, 163, 95, 0.16);
+        transform: scaleX(0);
+        transform-origin: left center;
+        transition: transform 0.35s ease;
+        pointer-events: none;
+      }
+
+      .day-card.selected::after { transform: scaleX(1); }
+
+      .day-card:hover { border-color: #4d4d4d; }
+
+      .day-card:focus-visible {
+        outline: 2px solid var(--cream);
+        outline-offset: 2px;
+      }
+
+      .day-card.selected {
+        border-color: var(--gold);
+        background: rgba(201, 163, 95, 0.08);
+      }
+
+      .day-card .dow {
+        display: block;
+        font-size: 16.5px;
+        font-weight: 700;
+        color: var(--cream);
+      }
+
+      .day-card .dmd {
+        display: block;
+        margin-top: 4px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--muted);
+      }
+
+      .day-card .count {
+        display: block;
+        margin-top: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: var(--gold);
+      }
+
+      .more-dates { margin-top: 22px; }
+
+      .more-toggle {
+        appearance: none;
+        -webkit-appearance: none;
+        font-family: inherit;
+        display: block;
+        margin: 0 auto;
+        background: none;
+        border: 0;
+        padding: 8px 6px;
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--muted);
+        cursor: pointer;
+        transition: color 0.15s ease, transform 0.12s ease;
+      }
+
+      .more-toggle:hover {
+        color: var(--cream);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .more-toggle:focus-visible {
+        outline: 2px solid var(--cream);
+        outline-offset: 2px;
+      }
+
+      .more-list { display: none; margin-top: 8px; }
+
+      .more-list.open { display: block; }
+
+      .more-day {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 16px;
+        margin-top: 10px;
+        padding: 16px 18px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+      }
+
+      .more-day .md-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+
+      .more-day .md-state {
+        font-size: 13px;
+        color: var(--micro);
+        text-align: right;
+        flex: none;
+      }
+
+      .more-note {
+        margin: 16px 0 0;
+        font-size: 13.5px;
+        line-height: 1.65;
+        text-align: center;
+        color: var(--micro);
+      }
+
+      .slot-area { display: none; margin-top: 52px; }
+
+      .slot-area.open { display: block; }
+
+      .slot-label {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        text-align: center;
+        color: var(--gold);
+      }
+
+      .slot-dayline {
+        margin: 10px 0 0;
+        font-size: 14px;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      .tz-note {
+        margin: 8px 0 0;
+        font-size: 12.5px;
+        text-align: center;
+        color: var(--micro);
+      }
+
+      .tz-days { margin-top: 14px; }
+
+      .chips {
+        margin-top: 26px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+        gap: 10px;
+      }
+
+      .chip {
+        appearance: none;
+        -webkit-appearance: none;
+        font-family: inherit;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        font-size: 15px;
+        font-weight: 600;
+        text-align: center;
+        color: var(--cream);
+        background: var(--surface);
+        border: 1px solid var(--border-2);
+        border-radius: 8px;
+        padding: 13px 10px;
+        cursor: pointer;
+        transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease, transform 0.12s ease;
+      }
+
+      .chip > span { position: relative; z-index: 1; }
+
+      .chip::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(246, 245, 237, 0.25);
+        transform: scaleX(0);
+        transform-origin: left center;
+        transition: transform 0.35s ease;
+        pointer-events: none;
+      }
+
+      .chip.selected::after { transform: scaleX(1); }
+
+      .chip .tick {
+        display: inline-flex;
+        width: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: width 0.2s ease, opacity 0.2s ease;
+      }
+
+      .chip .tick svg { width: 14px; height: 14px; display: block; flex: none; }
+
+      .chip .tick svg path {
+        stroke-dasharray: 20;
+        stroke-dashoffset: 20;
+        transition: stroke-dashoffset 0.25s ease 0.05s;
+      }
+
+      .chip.selected .tick { width: 14px; opacity: 1; }
+
+      .chip.selected .tick svg path { stroke-dashoffset: 0; }
+
+      .chip:hover { border-color: #4d4d4d; }
+
+      .chip:focus-visible {
+        outline: 2px solid var(--cream);
+        outline-offset: 2px;
+      }
+
+      .chip.selected {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: #101010;
+      }
+
+      /* ---------- Pick summary ---------- */
+      .pick-summary {
+        display: none;
+        margin-top: 36px;
+        border: 1px solid var(--border-2);
+        border-radius: 10px;
+        background: var(--surface);
+        padding: 28px 26px;
+        text-align: center;
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45), 0 4px 14px rgba(0, 0, 0, 0.35);
+      }
+
+      .pick-summary.show { display: block; }
+
+      .pick-text {
+        margin: 0;
+        font-size: 16.5px;
+        font-weight: 700;
+        line-height: 1.55;
+        color: var(--cream);
+      }
+
+      .gold-btn {
+        display: block;
+        width: 100%;
+        margin-top: 22px;
+        padding: 17px 20px;
+        background: var(--gold);
+        color: #101010;
+        font-family: inherit;
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        text-align: center;
+        border: 0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: filter 0.15s ease, transform 0.12s ease, opacity 0.2s ease;
+      }
+
+      .gold-btn:hover { filter: brightness(1.08); }
+
+      .gold-btn[disabled] {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      .gold-btn[disabled]:hover { filter: none; }
+
+      .gold-btn:focus-visible {
+        outline: 2px solid var(--cream);
+        outline-offset: 3px;
+      }
+
+      /* ---------- Details form ---------- */
+      .form-area { display: none; }
+
+      .form-area.open { display: block; }
+
+      .book h2.step-recap {
+        font-size: 19px;
+        font-weight: 700;
+        line-height: 1.5;
+        letter-spacing: -0.01em;
+        color: var(--gold);
+      }
+
+      .form-area form { margin-top: 38px; }
+
+      .field { margin-top: 22px; }
+
+      .field:first-child { margin-top: 0; }
+
+      .field label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.5;
+        color: var(--cream);
+      }
+
+      .field input {
+        width: 100%;
+        font-family: inherit;
+        font-size: 16px;
+        color: var(--cream);
+        background: var(--surface);
+        border: 1px solid var(--border-2);
+        border-radius: 8px;
+        padding: 14px 16px;
+      }
+
+      .field input:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+
+      .field input::placeholder { color: var(--micro); }
+
+      .field textarea {
+        width: 100%;
+        font-family: inherit;
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--cream);
+        background: var(--surface);
+        border: 1px solid var(--border-2);
+        border-radius: 8px;
+        padding: 14px 16px;
+        resize: vertical;
+      }
+
+      .field textarea:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+
+      .field textarea::placeholder { color: var(--micro); }
+
+      .form-error {
+        display: none;
+        margin: 20px 0 0;
+        font-size: 13.5px;
+        line-height: 1.6;
+        color: #d98c7a;
+      }
+
+      .form-error.show { display: block; }
+
+      .back-link {
+        appearance: none;
+        -webkit-appearance: none;
+        font-family: inherit;
+        display: block;
+        margin: 28px auto 0;
+        padding: 8px 6px;
+        background: none;
+        border: 0;
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--muted);
+        cursor: pointer;
+        transition: color 0.15s ease, transform 0.12s ease;
+      }
+
+      .back-link:hover {
+        color: var(--cream);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .back-link:focus-visible {
+        outline: 2px solid var(--cream);
+        outline-offset: 2px;
+      }
+
+      /* ---------- Confirmation ---------- */
+      .done-area {
+        display: none;
+        text-align: center;
+        padding-top: 8px;
+      }
+
+      .done-area.open { display: block; }
+
+      .check-ring {
+        width: 66px;
+        height: 66px;
+        margin: 0 auto;
+        border: 1.5px solid var(--gold);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .check-ring svg { width: 28px; height: 28px; display: block; }
+
+      .done-area h2 { margin-top: 30px; }
+
+      .done-when {
+        margin: 18px 0 0;
+        font-size: 17px;
+        font-weight: 700;
+        line-height: 1.55;
+        color: var(--cream);
+      }
+
+      .done-line {
+        margin: 16px 0 0;
+        font-size: 15px;
+        line-height: 1.7;
+        color: var(--muted);
+      }
+
+      .done-sign {
+        margin: 32px 0 0;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--gold);
+      }
+
+      /* ---------- Progress thread ---------- */
+      .progress {
+        height: 2px;
+        background: var(--border);
+        border-radius: 2px;
+        overflow: hidden;
+        margin-bottom: 48px;
+      }
+
+      .progress-fill {
+        height: 100%;
+        width: 33.333%;
+        background: var(--gold);
+        transition: width 0.45s ease;
+      }
+
+      /* ---------- Almost done ---------- */
+      .almost-area { display: none; }
+
+      .almost-area.open { display: block; }
+
+      .almost-note {
+        margin: 12px 0 0;
+        font-size: 13.5px;
+        font-weight: 500;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      .almost-sub {
+        margin: 8px 0 0;
+        font-size: 15px;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      .recap-card {
+        margin-top: 34px;
+        border: 1px solid var(--border-2);
+        border-radius: 10px;
+        background: var(--surface);
+        padding: 26px 24px;
+        text-align: center;
+      }
+
+      .recap-name {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--cream);
+      }
+
+      .recap-line {
+        margin: 8px 0 0;
+        font-size: 14.5px;
+        color: var(--muted);
+        overflow-wrap: anywhere;
+      }
+
+      .recap-slot {
+        margin: 8px 0 0;
+        font-size: 14.5px;
+        font-weight: 600;
+        line-height: 1.6;
+        color: var(--gold);
+      }
+
+      .edit-link {
+        appearance: none;
+        -webkit-appearance: none;
+        font-family: inherit;
+        margin-top: 16px;
+        background: none;
+        border: 0;
+        padding: 6px 8px;
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--muted);
+        cursor: pointer;
+        transition: color 0.15s ease, transform 0.12s ease;
+      }
+
+      .edit-link:hover {
+        color: var(--cream);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .edit-link:focus-visible {
+        outline: 2px solid var(--cream);
+        outline-offset: 2px;
+      }
+
+      .ack-row {
+        appearance: none;
+        -webkit-appearance: none;
+        font-family: inherit;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        margin-top: 22px;
+        padding: 16px 18px;
+        background: var(--surface);
+        border: 1px solid var(--border-2);
+        border-radius: 10px;
+        cursor: pointer;
+        text-align: left;
+        transition: border-color 0.15s ease, transform 0.12s ease;
+      }
+
+      .ack-row:hover { border-color: #4d4d4d; }
+
+      .ack-row:focus-visible {
+        outline: 2px solid var(--cream);
+        outline-offset: 2px;
+      }
+
+      .ack-box {
+        flex: none;
+        width: 22px;
+        height: 22px;
+        border: 1.5px solid var(--muted);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+
+      .ack-box svg { width: 13px; height: 13px; display: block; }
+
+      .ack-box svg path {
+        stroke-dasharray: 20;
+        stroke-dashoffset: 20;
+        transition: stroke-dashoffset 0.2s ease;
+      }
+
+      .ack-row.checked { border-color: var(--gold); }
+
+      .ack-row.checked .ack-box {
+        background: var(--gold);
+        border-color: var(--gold);
+      }
+
+      .ack-row.checked .ack-box svg path { stroke-dashoffset: 0; }
+
+      .ack-text {
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--cream);
+      }
+
+      /* ---------- Questionnaire (step 3) ---------- */
+      .quest { margin-top: 44px; text-align: left; }
+
+      .pill-mount { margin-top: 30px; }
+
+      .pill-group { margin-top: 30px; }
+
+      .pill-group:first-child { margin-top: 0; }
+
+      .pg-label {
+        display: block;
+        margin-bottom: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.5;
+        color: var(--cream);
+      }
+
+      .pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .pill {
+        appearance: none;
+        -webkit-appearance: none;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.45;
+        color: var(--cream);
+        background: var(--surface);
+        border: 1px solid var(--border-2);
+        border-radius: 8px;
+        padding: 11px 14px;
+        cursor: pointer;
+        text-align: left;
+        transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease, transform 0.12s ease;
+      }
+
+      .pill:hover { border-color: #4d4d4d; }
+
+      .pill:focus-visible {
+        outline: 2px solid var(--cream);
+        outline-offset: 2px;
+      }
+
+      .pill.selected {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: #101010;
+      }
+
+      .review-line {
+        margin: 34px 0 0;
+        font-size: 14px;
+        line-height: 1.7;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      /* ---------- Step 3 answer contrast (answers softer than questions) ---------- */
+      .quest .field input,
+      .quest .field textarea {
+        color: var(--body);
+        background: rgba(246, 245, 237, 0.03);
+        border-color: #232323;
+      }
+
+      .quest .field input:focus,
+      .quest .field textarea:focus {
+        border-color: var(--gold);
+      }
+
+      .quest .field input::placeholder,
+      .quest .field textarea::placeholder {
+        color: #6e685c;
+      }
+
+      .quest .pill:not(.selected) {
+        color: var(--body);
+        background: rgba(246, 245, 237, 0.03);
+        border-color: #232323;
+      }
+
+      .quest .pill:not(.selected):hover { border-color: #3a3a3a; }
+
+      /* ---------- Required asterisk + phone dial code ---------- */
+      .req {
+        color: var(--gold);
+        font-weight: 700;
+      }
+
+      .phone-row {
+        display: flex;
+        gap: 8px;
+      }
+
+      .phone-row select {
+        flex: none;
+        font-family: inherit;
+        font-size: 16px;
+        color: var(--cream);
+        background: var(--surface);
+        border: 1px solid var(--border-2);
+        border-radius: 8px;
+        padding: 14px 10px;
+        cursor: pointer;
+      }
+
+      .phone-row select:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+
+      .phone-row input {
+        flex: 1 1 auto;
+        width: auto;
+        min-width: 0;
+      }
+
+      .quest .field select {
+        color: var(--body);
+        background: rgba(246, 245, 237, 0.03);
+        border-color: #232323;
+      }
+
+      .quest .field select:focus { border-color: var(--gold); }
+
+      .gold-btn.locked {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      .gold-btn.locked:hover { filter: none; }
+
+      @keyframes needsPulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(201, 163, 95, 0); }
+        35% { box-shadow: 0 0 0 3px rgba(201, 163, 95, 0.55); }
+        70% { box-shadow: 0 0 0 0 rgba(201, 163, 95, 0); }
+      }
+
+      .needs {
+        animation: needsPulse 0.9s ease 2;
+        border-radius: 10px;
+      }
+
+      /* ---------- Press feedback + step motion ---------- */
+      .day-card:active,
+      .chip:active,
+      .pill:active,
+      .gold-btn:active:not([disabled]),
+      .video-cta-btn:active,
+      .sticky-btn:active,
+      .more-toggle:active,
+      .back-link:active,
+      .ack-row:active,
+      .edit-link:active,
+      .final-door-link:active {
+        transform: scale(0.97);
+      }
+
+      @keyframes stepIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .step-enter { animation: stepIn 0.25s ease-out; }
+
+      .step-leave {
+        opacity: 0;
+        transition: opacity 0.15s ease;
+      }
+
+      /* ---------- Feelings bar (under the booking section) ---------- */
+      .feelings {
+        margin-top: 48px;
+        padding-top: 32px;
+        border-top: 1px solid var(--border);
+      }
+
+      .feelings-lead {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.65;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        text-align: center;
+        color: var(--gold);
+      }
+
+      .feelings-rotator {
+        display: grid;
+        margin-top: 30px;
+      }
+
+      .feeling-slide {
+        grid-area: 1 / 1;
+        margin: 0;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.9s ease-in-out;
+        pointer-events: none;
+      }
+
+      .feeling-slide.is-active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .feeling-quote {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 1.65;
+        text-wrap: balance;
+        color: var(--cream);
+      }
+
+      .feeling-desc {
+        margin: 14px 0 0;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        line-height: 1.9;
+        color: var(--muted);
+      }
+
+      /* ---------- Footer ---------- */
+      footer {
+        margin-top: 104px;
+        padding-top: 32px;
+        border-top: 1px solid var(--border);
+      }
+
+      footer p {
+        margin: 0;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        color: var(--micro);
+        text-align: center;
+      }
+
+      /* ---------- Final door line ---------- */
+      .final-door {
+        margin: 28px 0 0;
+        text-align: center;
+      }
+
+      .final-door-link {
+        appearance: none;
+        -webkit-appearance: none;
+        font-family: inherit;
+        background: none;
+        border: 0;
+        padding: 8px 6px;
+        font-size: 14.5px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        color: var(--gold);
+        text-decoration: underline;
+        text-decoration-color: rgba(201, 163, 95, 0.45);
+        text-underline-offset: 5px;
+        cursor: pointer;
+        transition: color 0.15s ease, text-decoration-color 0.15s ease, transform 0.12s ease;
+      }
+
+      .final-door-link:hover {
+        color: var(--cream);
+        text-decoration-color: var(--cream);
+      }
+
+      .final-door-link:focus-visible {
+        outline: 2px solid var(--cream);
+        outline-offset: 3px;
+      }
+
+      @media (max-width: 480px) {
+        body::before { inset: 10px; }
+        .page { padding: 36px 20px 64px; }
+        .eyebrow {
+          font-size: clamp(7.5px, 2.22vw, 8.8px);
+          letter-spacing: 0.12em;
+          line-height: 1.8;
+          margin-bottom: 30px;
+        }
+        .eyebrow-line {
+          display: block;
+          white-space: nowrap;
+        }
+        .video-wrap { max-width: 80vw; }
+        .door { font-size: 16.5px; }
+        .letter p, .letter-steps li { font-size: 15.5px; }
+        .letter .letter-lead { font-size: 23px; }
+        .day-card { padding: 16px 14px; }
+        .chip { padding: 12px 8px; font-size: 14.5px; }
+        .pick-summary { padding: 24px 20px; }
+        .pill { flex: 1 1 100%; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .calm-head .rot-word { transition: none; }
+        .feeling-slide { transition: none; }
+        .chip, .gold-btn, .video-cta-btn, .sticky-btn, .sticky-bar, .day-card, .progress-fill, .ack-row, .more-toggle,
+        .back-link, .edit-link, .final-door-link, .pill, .day-card::after, .chip::after, .chip .tick,
+        .chip .tick svg path, .ack-box, .ack-box svg path { transition: none; }
+        .step-enter { animation: none; }
+        .needs { animation: none; }
+        .day-card:active, .chip:active, .pill:active, .gold-btn:active, .video-cta-btn:active, .sticky-btn:active, .more-toggle:active,
+        .back-link:active, .ack-row:active, .edit-link:active, .final-door-link:active { transform: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <!-- 1. Eyebrow -->
+      <p class="eyebrow"><span class="eyebrow-line">Tailored for high-earning husbands who take</span> <span class="eyebrow-line">great pride in providing well for their wives</span></p>
+
+      <!-- 2. Pain headline -->
+      <h1>
+        Stop allowing your reactions to erase
+        <span class="hl">her respect for your leadership</span>.
+      </h1>
+
+      <!-- 3. Door line -->
+      <p class="door">
+        Book a private call to master the 1 leadership skill you're missing during tension with your wife.
+        <span class="door-skill">Calm Emotional Steadiness</span>
+      </p>
+
+      <!-- 4. Video -->
+      <div class="video-wrap" id="videoWrap">
+        <iframe
+          src="https://fast.wistia.net/embed/iframe/oehdxsaafv?videoFoam=true"
+          title="VSL Video 4"
+          allow="autoplay; fullscreen"
+          allowtransparency="true"
+          frameborder="0"
+          scrolling="no"
+          allowfullscreen
+        ></iframe>
+      </div>
+
+      <!-- 4b. Under-video CTA -->
+      <div class="video-cta">
+        <button type="button" class="video-cta-btn" id="videoBookBtn">Book a Private Call</button>
+      </div>
+
+      <!-- 5. Gold rule -->
+      <div class="gold-rule" aria-hidden="true"></div>
+
+      <!-- 5b. Rotating calm headline -->
+      <h2 class="calm-head">
+        <span class="calm-fixed">Your Calm Is</span>
+        <span class="rotator"><span class="rot-word" id="rotWord">Respected.</span></span>
+      </h2>
+
+      <!-- 6. The letter -->
+      <section class="letter" aria-label="A note from Coach Raph">
+        <p class="letter-lead">Hey. I'm Coach Raph.</p>
+        <p>You know what's worse than not knowing what to do?</p>
+        <p>Knowing what to do, saying you'll do better next time, and then seeing your wife quietly shut down again while feeling her respect fade even more for your leadership... especially after how well you already provide financially and physically.</p>
+        <p>And you're likely here with me because you've tried to fix this pattern for a while, like I was for many years myself.</p>
+        <p>Fortunately, the solution is simple. You're not broken. You're just not properly trained in the moment.</p>
+        <p class="letter-strong">This changes everything.</p>
+        <p>All you need to do is master 1 simple leadership skill. <span class="gold">Calm emotional steadiness.</span></p>
+        <p>And with the right tools, structure and accountability... you too can experience the relief, calm, and true pride in your leadership, both I and the 100's of high-earning men like you I've coached get to feel.</p>
+        <p class="letter-strong">Your next step is simple.</p>
+        <ol class="letter-steps">
+          <li>Pick a day and time to meet with me, Coach Raph.</li>
+          <li>We'll discuss your situation, the kind of man you'd like to consistently show up as during tension with the woman you deeply love, and what potentially working directly with me would look like if I believe I can help.</li>
+          <li>If everything aligns, we move forward together. If not, we don't move forward. Simple.</li>
+        </ol>
+      </section>
+
+      <!-- 7. Booking flow -->
+      <section class="book" id="book" aria-label="Book your private call">
+        <div class="progress" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+
+        <!-- Step 1: pick a day and time -->
+        <div id="pickStep">
+          <h2>What day works best to meet with me?</h2>
+          <p class="book-frame">Private Client Suitability Call · 30 minutes · Zoom</p>
+
+          <p class="stakes-line">Waiting has a cost: her respect fades a little more each cycle. Leading has a payoff: her respect has something to return to.</p>
+          <p class="stakes-close">Your calm emotionally steady leadership.</p>
+
+          <div class="day-cards" id="dayCards" role="group" aria-label="Choose a day"></div>
+
+          <p class="tz-note tz-days" id="tzLine"></p>
+
+          <div class="more-dates">
+            <button type="button" class="more-toggle" id="moreToggle" aria-expanded="false">More dates ↓</button>
+            <div class="more-list" id="moreList">
+              <div class="more-day">
+                <span class="md-name">Wednesday, October 28</span>
+                <span class="md-state">No times open yet</span>
+              </div>
+              <div class="more-day">
+                <span class="md-name">Thursday, October 29</span>
+                <span class="md-state">No times open yet</span>
+              </div>
+              <p class="more-note">No times open yet — new times open daily.</p>
+            </div>
+          </div>
+
+          <div class="slot-area" id="slotArea" aria-live="polite">
+            <p class="slot-label" id="slotLabel"></p>
+            <p class="slot-dayline" id="slotDayline"></p>
+            <p class="tz-note">Times shown in your timezone.</p>
+            <div class="chips" id="chips" role="group" aria-label="Choose a time"></div>
+            <div class="pick-summary" id="pickSummary">
+              <p class="pick-text" id="pickText"></p>
+              <button type="button" class="gold-btn" id="confirmBtn">Continue</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: details -->
+        <div class="form-area" id="formStep">
+          <h2 class="step-recap" id="formChosen"></h2>
+          <form id="bookForm" novalidate>
+            <div class="field">
+              <label for="fName">How should I address you?</label>
+              <input id="fName" name="name" type="text" autocomplete="name" placeholder="Full name" />
+            </div>
+            <div class="field">
+              <label for="fEmail">Where should I send the zoom link to meet with me?</label>
+              <input id="fEmail" name="email" type="email" autocomplete="email" placeholder="Best email" />
+            </div>
+            <p class="form-error" id="formError" role="alert"></p>
+            <button type="submit" class="gold-btn">Continue</button>
+          </form>
+          <button type="button" class="back-link" id="backLink">← Pick a different time</button>
+        </div>
+
+        <!-- Step 3: almost done -->
+        <div class="almost-area" id="almostStep">
+          <h2 id="almostTitle">Your call is not confirmed yet.</h2>
+          <p class="almost-note">Last step.</p>
+          <p class="almost-sub">Help me get to know a bit about you before we meet.</p>
+          <div class="recap-card">
+            <p class="recap-name" id="recapName"></p>
+            <p class="recap-line" id="recapEmail"></p>
+            <p class="recap-slot" id="recapSlot"></p>
+            <button type="button" class="edit-link" id="editLink">Edit</button>
+          </div>
+          <div class="quest">
+            <div class="field" id="wrapIg">
+              <label for="qIg">What is your Instagram handle? (ie. @calmcoachraph) <span class="req" aria-hidden="true">*</span></label>
+              <input id="qIg" type="text" placeholder="@username" autocomplete="off" />
+            </div>
+            <div class="pill-mount" id="mountSituation"></div>
+            <div class="pill-mount" id="mountProfession"></div>
+            <div class="field" id="wrapPrompt">
+              <label for="qPrompt">Why do you feel compelled to master your calm emotionally steady leadership now? <span class="req" aria-hidden="true">*</span></label>
+              <textarea id="qPrompt" rows="3"></textarea>
+            </div>
+            <div class="field" id="wrapTried">
+              <label for="qTried">I'm under the assumption you've tried other ways already to work through this. What did you try so far? And why do you believe it didn't work yet for you? <span class="req" aria-hidden="true">*</span></label>
+              <textarea id="qTried" rows="3"></textarea>
+            </div>
+            <div class="pill-mount" id="mountBudget"></div>
+            <div class="pill-mount" id="mountTiming"></div>
+            <div class="field">
+              <label for="qNote">Is there anything else you'd like me to know before our call? (Optional)</label>
+              <textarea id="qNote" rows="2"></textarea>
+            </div>
+            <div class="field" id="wrapPhone">
+              <label for="qPhone">Phone number <span class="req" aria-hidden="true">*</span></label>
+              <div class="phone-row">
+                <select id="qCountry" aria-label="Country dial code"></select>
+                <input id="qPhone" type="tel" placeholder="Best phone number" autocomplete="tel-national" />
+              </div>
+            </div>
+          </div>
+          <p class="review-line">Coach Raph will personally and privately review your answers before your call. If he believes he can't help based on your answers, your call will be cancelled.</p>
+          <button type="button" class="ack-row" id="ackRow" aria-pressed="false">
+            <span class="ack-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4.5 12.5l5 5L19.5 7" stroke="#101010" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="ack-text">I confirm I've read and understand.</span>
+          </button>
+          <button type="button" class="gold-btn locked" id="finalBtn" aria-disabled="true">Confirm my call</button>
+        </div>
+
+        <!-- Step 4: booked -->
+        <div class="done-area" id="doneStep">
+          <div class="check-ring" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4.5 12.5l5 5L19.5 7" stroke="#c9a35f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h2>You're booked.</h2>
+          <p class="done-when" id="doneWhen"></p>
+          <p class="done-line">Coach Raph will personally review your answers before your call.</p>
+          <p class="done-line">Find somewhere quiet for our call — this is a working conversation, not a sales pitch.</p>
+          <p class="done-line">Your confirmation and Zoom link are on the way to your email.</p>
+          <p class="done-sign">— Coach Raph</p>
+        </div>
+      </section>
+
+      <!-- 8. Feelings bar -->
+      <section class="feelings" aria-label="Words from men who have worked with Coach Raph">
+        <p class="feelings-lead">Maybe this can be you too</p>
+        <div class="feelings-rotator" id="feelingsRotator">
+          <figure class="feeling-slide is-active">
+            <blockquote class="feeling-quote">&ldquo;It&rsquo;s been 10 days and I&rsquo;ve never felt this consistent level of calm.&rdquo;</blockquote>
+            <figcaption class="feeling-desc">Dubai 🇦🇪 &middot; Married 2 years</figcaption>
+          </figure>
+          <figure class="feeling-slide" aria-hidden="true">
+            <blockquote class="feeling-quote">&ldquo;It feels like I&rsquo;m viewing the storm from the outside for the first time in my life.&rdquo;</blockquote>
+            <figcaption class="feeling-desc">CEO &amp; Founder &middot; USA 🇺🇸 &middot; Married 4 years</figcaption>
+          </figure>
+          <figure class="feeling-slide" aria-hidden="true">
+            <blockquote class="feeling-quote">&ldquo;I&rsquo;ve never felt this level of respect from my wife.&rdquo;</blockquote>
+            <figcaption class="feeling-desc">Canada 🇨🇦 &middot; Engaged</figcaption>
+          </figure>
+          <figure class="feeling-slide" aria-hidden="true">
+            <blockquote class="feeling-quote">&ldquo;It&rsquo;s almost like she&rsquo;s witnessing a different version of me.&rdquo;</blockquote>
+            <figcaption class="feeling-desc">Senior HR Executive &middot; Poland 🇵🇱 &middot; Married 6 years</figcaption>
+          </figure>
+          <figure class="feeling-slide" aria-hidden="true">
+            <blockquote class="feeling-quote">&ldquo;Chris, you&rsquo;re so calm.&rdquo;</blockquote>
+            <figcaption class="feeling-desc">Physician &middot; Australia 🇦🇺 &middot; Married 17 years</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 9. Final door line — sits directly under the feelings bar -->
+      <p class="final-door"><button type="button" class="final-door-link" id="finalDoorBtn">Book a private call.</button></p>
+
+      <!-- 10. Footer -->
+      <footer>
+        <p>Private. What you share here stays here.</p>
+      </footer>
+    </main>
+
+    <!-- Sticky return bar -->
+    <div class="sticky-bar no-pick" id="stickyBar" aria-hidden="true">
+      <span class="sticky-pick" id="stickyPick"></span>
+      <button type="button" class="sticky-btn" id="stickyBookBtn" tabindex="-1">Book a Private Call</button>
+    </div>
+
+    <script>
+      // Rotating headline word
+      (function () {
+        var words = ["Respected.", "Attractive.", "Consistent.", "Safe.", "Trusted.", "Contagious."];
+        var el = document.getElementById("rotWord");
+        var i = 0;
+        setInterval(function () {
+          el.classList.add("fading");
+          setTimeout(function () {
+            i = (i + 1) % words.length;
+            el.textContent = words[i];
+            el.classList.remove("fading");
+          }, 450);
+        }, 2600);
+      })();
+
+      // Booking flow: day -> time -> confirm -> form -> confirmation.
+      // Slots are stored as ISO timestamps in Eastern Time and rendered
+      // converted into the visitor's local timezone, grouped by local day.
+      (function () {
+        var ET = "America/New_York";
+        var SLOTS = [
+          "2026-10-26T13:00:00-04:00",
+          "2026-10-26T14:00:00-04:00",
+          "2026-10-26T15:00:00-04:00",
+          "2026-10-26T16:00:00-04:00",
+          "2026-10-26T17:00:00-04:00",
+          "2026-10-26T18:00:00-04:00",
+          "2026-10-26T19:00:00-04:00",
+          "2026-10-27T13:00:00-04:00",
+          "2026-10-27T15:00:00-04:00",
+          "2026-10-27T16:00:00-04:00",
+          "2026-10-27T18:00:00-04:00",
+          "2026-10-27T19:00:00-04:00"
+        ];
+
+        // Production wiring (Oct 26 build spec): live slots feed,
+        // Lead Save + Book Call webhooks, gated confirmation redirect.
+        var SLOTS_FEED_URL = "https://raw.githubusercontent.com/calmcoachraph/calm-booking/main/slots.json";
+        var LEAD_SAVE_URL = "https://services.leadconnectorhq.com/hooks/bwnJzrBmRUq76lvytxyM/webhook-trigger/ad6af3d3-125f-4e3e-9112-55df684f3db6";
+        var BOOK_CALL_URL = "https://services.leadconnectorhq.com/hooks/bwnJzrBmRUq76lvytxyM/webhook-trigger/13be3ab5-4a1f-4249-a8ed-79c1cb6bb4f1";
+        var CONFIRM_URL = "https://offer.calm-enterprises-inc.com/private-clarity-call-form-filled-out";
+
+        function splitName(full) {
+          var t = (full || "").trim();
+          var i = t.indexOf(" ");
+          if (i < 0) return { firstName: t, lastName: "" };
+          return { firstName: t.slice(0, i), lastName: t.slice(i + 1).trim() };
+        }
+
+        function postJSON(url, body) {
+          return fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+          });
+        }
+
+        function fireLeadSave(email, fullName, phone) {
+          var parts = splitName(fullName);
+          postJSON(LEAD_SAVE_URL, {
+            email: email,
+            firstName: parts.firstName,
+            lastName: parts.lastName,
+            phone: phone || ""
+          }).catch(function () { /* lead save never blocks the flow */ });
+        }
+
+        var etStartFmt = new Intl.DateTimeFormat("en-US", {
+          timeZone: ET, year: "numeric", month: "2-digit", day: "2-digit",
+          hour: "2-digit", minute: "2-digit", hour12: true
+        });
+
+        function slotStartET(d) {
+          var p = {};
+          etStartFmt.formatToParts(d).forEach(function (part) { p[part.type] = part.value; });
+          return p.year + "-" + p.month + "-" + p.day + " " + p.hour + ":" + p.minute + " " + p.dayPeriod;
+        }
+
+        var dayKeyFmt = new Intl.DateTimeFormat("en-CA", { year: "numeric", month: "2-digit", day: "2-digit" });
+        var etKeyFmt = new Intl.DateTimeFormat("en-CA", { year: "numeric", month: "2-digit", day: "2-digit", timeZone: ET });
+        var dowFmt = new Intl.DateTimeFormat("en-US", { weekday: "long" });
+        var mdFmt = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric" });
+        var timeFmt = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" });
+        var etDayFmt = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: ET });
+        var etTimeFmt = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", timeZone: ET });
+
+        // Group slot ISO strings by the visitor's local calendar day.
+        function buildGroups(isoList) {
+          var list = [];
+          var byKey = {};
+          isoList.forEach(function (iso) {
+            var d = new Date(iso);
+            if (isNaN(d.getTime())) return;
+            var key = dayKeyFmt.format(d);
+            if (!byKey[key]) {
+              byKey[key] = { key: key, date: d, slots: [] };
+              list.push(byKey[key]);
+            }
+            byKey[key].slots.push(d);
+          });
+          list.sort(function (a, b) { return a.date - b.date; });
+          list.forEach(function (g) {
+            g.slots.sort(function (a, b) { return a - b; });
+          });
+          return list;
+        }
+        var groups = buildGroups(SLOTS);
+
+        var dayCards = document.getElementById("dayCards");
+        var tzLine = document.getElementById("tzLine");
+        if (tzLine) {
+          var visitorTz = "";
+          try {
+            visitorTz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+          } catch (e) { /* timezone name is a reassurance only, never a blocker */ }
+          tzLine.textContent = visitorTz
+            ? "All times shown in your time zone · " + visitorTz
+            : "All times shown in your time zone";
+        }
+        var slotArea = document.getElementById("slotArea");
+        var slotLabel = document.getElementById("slotLabel");
+        var slotDayline = document.getElementById("slotDayline");
+        var chipsEl = document.getElementById("chips");
+        var pickSummary = document.getElementById("pickSummary");
+        var pickText = document.getElementById("pickText");
+        var confirmBtn = document.getElementById("confirmBtn");
+        var pickStep = document.getElementById("pickStep");
+        var formStep = document.getElementById("formStep");
+        var almostStep = document.getElementById("almostStep");
+        var doneStep = document.getElementById("doneStep");
+        var formChosen = document.getElementById("formChosen");
+        var form = document.getElementById("bookForm");
+        var formError = document.getElementById("formError");
+        var backLink = document.getElementById("backLink");
+        var doneWhen = document.getElementById("doneWhen");
+        var bookSection = document.getElementById("book");
+        var progressFill = document.getElementById("progressFill");
+        var almostTitle = document.getElementById("almostTitle");
+        var recapName = document.getElementById("recapName");
+        var recapEmail = document.getElementById("recapEmail");
+        var recapSlot = document.getElementById("recapSlot");
+        var ackRow = document.getElementById("ackRow");
+        var finalBtn = document.getElementById("finalBtn");
+        var editLink = document.getElementById("editLink");
+        var videoWrap = document.getElementById("videoWrap");
+        var videoBookBtn = document.getElementById("videoBookBtn");
+        var finalDoorBtn = document.getElementById("finalDoorBtn");
+        var stickyBar = document.getElementById("stickyBar");
+        var stickyPick = document.getElementById("stickyPick");
+        var stickyBookBtn = document.getElementById("stickyBookBtn");
+
+        var selectedSlot = null;
+        var dayPicked = false;
+        var visitorName = "";
+        var visitorEmail = "";
+        var bookedDone = false;
+        var videoVisible = true;
+        var bookVisible = false;
+
+        var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        function haptic(ms) {
+          try {
+            if (navigator.vibrate) navigator.vibrate(ms);
+          } catch (e) { /* haptics are a bonus, never a blocker */ }
+        }
+
+        function dayHeading(d) {
+          return dowFmt.format(d) + ", " + mdFmt.format(d);
+        }
+
+        var dowShortFmt = new Intl.DateTimeFormat("en-US", { weekday: "short" });
+        var mdShortFmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" });
+
+        function scrollToBooking() {
+          haptic(10);
+          // The flow's current step is already the visible one inside the
+          // booking section, so scrolling to the section lands him exactly
+          // where he left off — no state is touched, only position.
+          bookSection.scrollIntoView({
+            behavior: reduceMotion ? "auto" : "smooth",
+            block: "start"
+          });
+        }
+
+        function updateStickyPick() {
+          if (selectedSlot) {
+            stickyPick.textContent =
+              dowShortFmt.format(selectedSlot) + ", " + mdShortFmt.format(selectedSlot) +
+              " · " + timeFmt.format(selectedSlot) + " your time";
+            stickyPick.classList.add("show");
+            stickyBar.classList.remove("no-pick");
+          } else {
+            stickyPick.textContent = "";
+            stickyPick.classList.remove("show");
+            stickyBar.classList.add("no-pick");
+          }
+        }
+
+        function updateStickyVisibility() {
+          var show = !bookedDone && !videoVisible && !bookVisible;
+          stickyBar.classList.toggle("show", show);
+          stickyBar.setAttribute("aria-hidden", show ? "false" : "true");
+          stickyBookBtn.tabIndex = show ? 0 : -1;
+        }
+
+        if (videoBookBtn) videoBookBtn.addEventListener("click", scrollToBooking);
+        if (stickyBookBtn) stickyBookBtn.addEventListener("click", scrollToBooking);
+        if (finalDoorBtn) finalDoorBtn.addEventListener("click", scrollToBooking);
+
+        if ("IntersectionObserver" in window) {
+          var videoObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) { videoVisible = e.isIntersecting; });
+            updateStickyVisibility();
+          }, { threshold: 0.01 });
+          if (videoWrap) videoObs.observe(videoWrap);
+          var bookObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) { bookVisible = e.isIntersecting; });
+            updateStickyVisibility();
+          }, { threshold: 0.01 });
+          bookObs.observe(bookSection);
+        } else {
+          // Fallback: poll positions on scroll.
+          var checkPos = function () {
+            if (videoWrap) {
+              var vr = videoWrap.getBoundingClientRect();
+              videoVisible = vr.bottom > 0 && vr.top < window.innerHeight;
+            }
+            var br = bookSection.getBoundingClientRect();
+            bookVisible = br.bottom > 0 && br.top < window.innerHeight;
+            updateStickyVisibility();
+          };
+          window.addEventListener("scroll", checkPos, { passive: true });
+          checkPos();
+        }
+
+        function renderDays() {
+          dayCards.innerHTML = "";
+          groups.forEach(function (g) {
+            var btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "day-card";
+            btn.setAttribute("aria-pressed", "false");
+
+            var dow = document.createElement("span");
+            dow.className = "dow";
+            dow.textContent = dowFmt.format(g.date);
+            var dmd = document.createElement("span");
+            dmd.className = "dmd";
+            dmd.textContent = mdFmt.format(g.date);
+            var count = document.createElement("span");
+            count.className = "count";
+            count.textContent = g.slots.length + (g.slots.length === 1 ? " time open" : " times open");
+
+            btn.appendChild(dow);
+            btn.appendChild(dmd);
+            btn.appendChild(count);
+            btn.addEventListener("click", function () { selectDay(g); });
+            g.button = btn;
+            dayCards.appendChild(btn);
+          });
+        }
+
+        function selectDay(g) {
+          selectedSlot = null;
+          dayPicked = true;
+          updateStickyPick();
+          haptic(10);
+          groups.forEach(function (x) {
+            var on = x === g;
+            x.button.classList.toggle("selected", on);
+            x.button.setAttribute("aria-pressed", on ? "true" : "false");
+          });
+          slotLabel.textContent = "Times — " + dowFmt.format(g.date);
+          slotDayline.textContent = dayHeading(g.date);
+          renderChips(g);
+          pickSummary.classList.remove("show");
+          slotArea.classList.add("open");
+          slotArea.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+
+        function renderChips(g) {
+          chipsEl.innerHTML = "";
+          g.slots.forEach(function (d) {
+            var chip = document.createElement("button");
+            chip.type = "button";
+            chip.className = "chip";
+            var label = document.createElement("span");
+            label.className = "chip-time";
+            label.textContent = timeFmt.format(d);
+            var tick = document.createElement("span");
+            tick.className = "tick";
+            tick.setAttribute("aria-hidden", "true");
+            tick.innerHTML =
+              '<svg viewBox="0 0 24 24" fill="none"><path d="M4.5 12.5l5 5L19.5 7" stroke="#101010" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+            chip.appendChild(label);
+            chip.appendChild(tick);
+            chip.setAttribute("aria-pressed", "false");
+            chip.setAttribute("aria-label", timeFmt.format(d) + " on " + dayHeading(d));
+            chip.addEventListener("click", function () { selectSlot(d, chip); });
+            chipsEl.appendChild(chip);
+          });
+        }
+
+        function selectSlot(d, chip) {
+          selectedSlot = d;
+          updateStickyPick();
+          haptic(10);
+          var all = chipsEl.querySelectorAll(".chip");
+          for (var i = 0; i < all.length; i++) {
+            all[i].classList.remove("selected");
+            all[i].setAttribute("aria-pressed", "false");
+          }
+          chip.classList.add("selected");
+          chip.setAttribute("aria-pressed", "true");
+          pickText.textContent =
+            "Your private call — " + dayHeading(d) + ", " + timeFmt.format(d) +
+            " your time · 30 minutes · Zoom";
+          pickSummary.classList.add("show");
+          pickSummary.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+
+        var stepEls = { pick: pickStep, form: formStep, almost: almostStep, done: doneStep };
+        var stepProgress = { pick: "33.333%", form: "66.666%", almost: "100%", done: "100%" };
+        var currentStep = "pick";
+
+        function showStep(step, isBack) {
+          if (step === currentStep) return;
+          var from = stepEls[currentStep];
+          var to = stepEls[step];
+          currentStep = step;
+          if (step === "done") {
+            bookedDone = true;
+            updateStickyVisibility();
+          }
+          progressFill.style.width = stepProgress[step];
+          if (!isBack) haptic(15);
+          function swap() {
+            if (from === pickStep) { from.style.display = "none"; }
+            else { from.classList.remove("open"); }
+            if (to === pickStep) { to.style.display = ""; }
+            else { to.classList.add("open"); }
+            if (!reduceMotion) {
+              to.classList.remove("step-enter");
+              void to.offsetWidth;
+              to.classList.add("step-enter");
+            }
+            bookSection.scrollIntoView({
+              behavior: reduceMotion ? "auto" : "smooth",
+              block: "start"
+            });
+          }
+          if (reduceMotion) {
+            swap();
+          } else {
+            from.classList.add("step-leave");
+            setTimeout(function () {
+              from.classList.remove("step-leave");
+              swap();
+            }, 150);
+          }
+        }
+
+        confirmBtn.addEventListener("click", function () {
+          if (!selectedSlot) return;
+          formChosen.textContent =
+            "Your private call — " + dayHeading(selectedSlot) + ", " + timeFmt.format(selectedSlot) +
+            " your time · 30 minutes · Zoom";
+          showStep("form");
+        });
+
+        backLink.addEventListener("click", function () {
+          showStep("pick", true);
+        });
+
+        var moreToggle = document.getElementById("moreToggle");
+        var moreList = document.getElementById("moreList");
+        moreToggle.addEventListener("click", function () {
+          var open = moreList.classList.toggle("open");
+          moreToggle.setAttribute("aria-expanded", open ? "true" : "false");
+          moreToggle.textContent = open ? "More dates ↑" : "More dates ↓";
+        });
+
+        function slotWhen() {
+          var when = dayHeading(selectedSlot) + " at " + timeFmt.format(selectedSlot) + " your time";
+          var differs =
+            etKeyFmt.format(selectedSlot) !== dayKeyFmt.format(selectedSlot) ||
+            etTimeFmt.format(selectedSlot) !== timeFmt.format(selectedSlot);
+          if (differs) {
+            when += " (" + etDayFmt.format(selectedSlot) + " at " + etTimeFmt.format(selectedSlot) + " ET)";
+          }
+          return when;
+        }
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var name = document.getElementById("fName").value.trim();
+          var email = document.getElementById("fEmail").value.trim();
+          var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+          if (!name || !emailOk) {
+            formError.textContent =
+              "Please add your name — and check the email — so your Zoom link reaches you.";
+            formError.classList.add("show");
+            return;
+          }
+          formError.classList.remove("show");
+          visitorName = name;
+          visitorEmail = email;
+          fireLeadSave(email, name, "");
+          almostTitle.textContent = name.split(/\s+/)[0] + ", your call is not confirmed yet.";
+          recapName.textContent = name;
+          recapEmail.textContent = email;
+          recapSlot.textContent = slotWhen();
+          showStep("almost");
+        });
+
+        // Questionnaire (step 3): Raph's dictated final version — exact
+        // wording, exact order. The answers map, in this order, to the
+        // eight HighLevel 'Booking Page' fields (Instagram, relationship
+        // situation, profession, why-now, already-tried, budget range,
+        // start timing, anything-to-know), plus phone.
+        var PILL_GROUPS = [
+          {
+            id: "pgSituation",
+            key: "situation",
+            mount: "mountSituation",
+            label: "What best describes your current relationship situation? (Choose one)",
+            options: [
+              "Married",
+              "Married (Currently Separated)",
+              "Engaged",
+              "Not listed above (I may not be the right coach to help with your current situation)"
+            ]
+          },
+          {
+            id: "pgProfession",
+            key: "profession",
+            mount: "mountProfession",
+            label: "What best describes you professionally right now?",
+            options: [
+              "Established Business Owner / Entrepreneur",
+              "Executive / Senior Leadership",
+              "Medical, Legal, Finance, or Other Specialized Professional",
+              "Sales / High-Performing Professional",
+              "Skilled Trade / Self-Employed Professional",
+              "Currently Between Roles / Rebuilding",
+              "Other"
+            ]
+          },
+          {
+            id: "pgBudget",
+            key: "budget",
+            mount: "mountBudget",
+            label: "This is a 1-to-1 private leadership program. If we're the right fit for each other, what is the monthly budget range that works for you?",
+            options: [
+              "$1K–$2K",
+              "$2K–$4K",
+              "$4K+"
+            ]
+          },
+          {
+            id: "pgTiming",
+            key: "timing",
+            mount: "mountTiming",
+            label: "If we're the right match, how soon are you looking to start?",
+            options: [
+              "Right away.",
+              "Within the next 7 days.",
+              "Not sure yet."
+            ]
+          }
+        ];
+        var pillState = {};
+        var pillWraps = {};
+
+        PILL_GROUPS.forEach(function (g) {
+          pillState[g.key] = null;
+          var wrap = document.createElement("div");
+          wrap.className = "pill-group";
+          wrap.id = g.id;
+          var lab = document.createElement("span");
+          lab.className = "pg-label";
+          lab.textContent = g.label;
+          var star = document.createElement("span");
+          star.className = "req";
+          star.setAttribute("aria-hidden", "true");
+          star.textContent = " *";
+          lab.appendChild(star);
+          var row = document.createElement("div");
+          row.className = "pills";
+          row.setAttribute("role", "group");
+          row.setAttribute("aria-label", g.label);
+          g.options.forEach(function (opt) {
+            var pill = document.createElement("button");
+            pill.type = "button";
+            pill.className = "pill";
+            pill.textContent = opt;
+            pill.setAttribute("aria-pressed", "false");
+            pill.addEventListener("click", function () {
+              pillState[g.key] = opt;
+              haptic(10);
+              var all = row.querySelectorAll(".pill");
+              for (var i = 0; i < all.length; i++) {
+                var on = all[i] === pill;
+                all[i].classList.toggle("selected", on);
+                all[i].setAttribute("aria-pressed", on ? "true" : "false");
+              }
+              wrap.classList.remove("needs");
+              updateConfirm();
+            });
+            row.appendChild(pill);
+          });
+          wrap.appendChild(lab);
+          wrap.appendChild(row);
+          document.getElementById(g.mount).appendChild(wrap);
+          pillWraps[g.key] = wrap;
+        });
+
+        var qIg = document.getElementById("qIg");
+        var qNote = document.getElementById("qNote");
+        var qPhone = document.getElementById("qPhone");
+        var qPrompt = document.getElementById("qPrompt");
+        var qTried = document.getElementById("qTried");
+        var wrapIg = document.getElementById("wrapIg");
+        var wrapPhone = document.getElementById("wrapPhone");
+        var wrapPrompt = document.getElementById("wrapPrompt");
+        var wrapTried = document.getElementById("wrapTried");
+        var ackChecked = false;
+
+        // Phone dial code: a compact flag + code selector pre-filled
+        // from the visitor's detected country — Intl timezone first,
+        // browser locale region as the fallback, +1 when neither says.
+        // The submitted phone is always the full international number:
+        // selected dial code + the digits he entered.
+        var COUNTRY_CODES = [
+          ["US", "United States", "1"], ["CA", "Canada", "1"],
+          ["GB", "United Kingdom", "44"], ["IE", "Ireland", "353"],
+          ["AU", "Australia", "61"], ["NZ", "New Zealand", "64"],
+          ["AE", "United Arab Emirates", "971"], ["SA", "Saudi Arabia", "966"],
+          ["QA", "Qatar", "974"], ["KW", "Kuwait", "965"],
+          ["BH", "Bahrain", "973"], ["OM", "Oman", "968"],
+          ["IL", "Israel", "972"], ["JO", "Jordan", "962"],
+          ["LB", "Lebanon", "961"], ["TR", "Turkey", "90"],
+          ["EG", "Egypt", "20"], ["ZA", "South Africa", "27"],
+          ["NG", "Nigeria", "234"], ["GH", "Ghana", "233"],
+          ["KE", "Kenya", "254"], ["MA", "Morocco", "212"],
+          ["IN", "India", "91"], ["PK", "Pakistan", "92"],
+          ["BD", "Bangladesh", "880"], ["LK", "Sri Lanka", "94"],
+          ["NP", "Nepal", "977"], ["SG", "Singapore", "65"],
+          ["MY", "Malaysia", "60"], ["ID", "Indonesia", "62"],
+          ["PH", "Philippines", "63"], ["TH", "Thailand", "66"],
+          ["VN", "Vietnam", "84"], ["HK", "Hong Kong", "852"],
+          ["CN", "China", "86"], ["TW", "Taiwan", "886"],
+          ["JP", "Japan", "81"], ["KR", "South Korea", "82"],
+          ["PL", "Poland", "48"], ["DE", "Germany", "49"],
+          ["FR", "France", "33"], ["ES", "Spain", "34"],
+          ["PT", "Portugal", "351"], ["IT", "Italy", "39"],
+          ["NL", "Netherlands", "31"], ["BE", "Belgium", "32"],
+          ["CH", "Switzerland", "41"], ["AT", "Austria", "43"],
+          ["SE", "Sweden", "46"], ["NO", "Norway", "47"],
+          ["DK", "Denmark", "45"], ["FI", "Finland", "358"],
+          ["IS", "Iceland", "354"], ["GR", "Greece", "30"],
+          ["CZ", "Czechia", "420"], ["SK", "Slovakia", "421"],
+          ["HU", "Hungary", "36"], ["RO", "Romania", "40"],
+          ["BG", "Bulgaria", "359"], ["HR", "Croatia", "385"],
+          ["SI", "Slovenia", "386"], ["RS", "Serbia", "381"],
+          ["EE", "Estonia", "372"], ["LV", "Latvia", "371"],
+          ["LT", "Lithuania", "370"], ["CY", "Cyprus", "357"],
+          ["MT", "Malta", "356"], ["LU", "Luxembourg", "352"],
+          ["MC", "Monaco", "377"], ["UA", "Ukraine", "380"],
+          ["RU", "Russia", "7"], ["MX", "Mexico", "52"],
+          ["BR", "Brazil", "55"], ["AR", "Argentina", "54"],
+          ["CL", "Chile", "56"], ["CO", "Colombia", "57"],
+          ["PE", "Peru", "51"], ["VE", "Venezuela", "58"],
+          ["EC", "Ecuador", "593"], ["BO", "Bolivia", "591"],
+          ["PY", "Paraguay", "595"], ["UY", "Uruguay", "598"],
+          ["PA", "Panama", "507"], ["CR", "Costa Rica", "506"],
+          ["GT", "Guatemala", "502"], ["HN", "Honduras", "504"],
+          ["SV", "El Salvador", "503"], ["NI", "Nicaragua", "505"],
+          ["CU", "Cuba", "53"], ["DO", "Dominican Republic", "1809"],
+          ["PR", "Puerto Rico", "1787"], ["JM", "Jamaica", "1876"],
+          ["TT", "Trinidad and Tobago", "1868"], ["BS", "Bahamas", "1242"],
+          ["BB", "Barbados", "1246"], ["FJ", "Fiji", "679"],
+          ["MU", "Mauritius", "230"], ["DZ", "Algeria", "213"],
+          ["TN", "Tunisia", "216"], ["ET", "Ethiopia", "251"],
+          ["UG", "Uganda", "256"], ["TZ", "Tanzania", "255"],
+          ["ZM", "Zambia", "260"], ["ZW", "Zimbabwe", "263"],
+          ["AO", "Angola", "244"], ["MZ", "Mozambique", "258"],
+          ["BW", "Botswana", "267"], ["NA", "Namibia", "264"],
+          ["KH", "Cambodia", "855"], ["LA", "Laos", "856"],
+          ["MM", "Myanmar", "95"], ["BN", "Brunei", "673"]
+        ];
+        var TZ_COUNTRY = {
+          "America/New_York": "US", "America/Detroit": "US",
+          "America/Chicago": "US", "America/Denver": "US",
+          "America/Phoenix": "US", "America/Los_Angeles": "US",
+          "America/Anchorage": "US", "Pacific/Honolulu": "US",
+          "America/Toronto": "CA", "America/Montreal": "CA",
+          "America/Vancouver": "CA", "America/Winnipeg": "CA",
+          "America/Halifax": "CA", "America/St_Johns": "CA",
+          "America/Mexico_City": "MX", "America/Sao_Paulo": "BR",
+          "America/Bogota": "CO", "America/Lima": "PE",
+          "America/Santiago": "CL", "America/Argentina/Buenos_Aires": "AR",
+          "Europe/London": "GB", "Europe/Dublin": "IE",
+          "Europe/Warsaw": "PL", "Europe/Berlin": "DE",
+          "Europe/Paris": "FR", "Europe/Madrid": "ES",
+          "Europe/Lisbon": "PT", "Europe/Rome": "IT",
+          "Europe/Amsterdam": "NL", "Europe/Brussels": "BE",
+          "Europe/Zurich": "CH", "Europe/Vienna": "AT",
+          "Europe/Stockholm": "SE", "Europe/Oslo": "NO",
+          "Europe/Copenhagen": "DK", "Europe/Helsinki": "FI",
+          "Europe/Athens": "GR", "Europe/Prague": "CZ",
+          "Europe/Budapest": "HU", "Europe/Bucharest": "RO",
+          "Europe/Kiev": "UA", "Europe/Kyiv": "UA",
+          "Europe/Moscow": "RU", "Europe/Istanbul": "TR",
+          "Asia/Dubai": "AE", "Asia/Riyadh": "SA",
+          "Asia/Qatar": "QA", "Asia/Kuwait": "KW",
+          "Asia/Karachi": "PK", "Asia/Kolkata": "IN",
+          "Asia/Calcutta": "IN", "Asia/Dhaka": "BD",
+          "Asia/Singapore": "SG", "Asia/Kuala_Lumpur": "MY",
+          "Asia/Jakarta": "ID", "Asia/Manila": "PH",
+          "Asia/Bangkok": "TH", "Asia/Ho_Chi_Minh": "VN",
+          "Asia/Hong_Kong": "HK", "Asia/Shanghai": "CN",
+          "Asia/Taipei": "TW", "Asia/Tokyo": "JP",
+          "Asia/Seoul": "KR", "Asia/Jerusalem": "IL",
+          "Asia/Tel_Aviv": "IL", "Australia/Sydney": "AU",
+          "Australia/Melbourne": "AU", "Australia/Brisbane": "AU",
+          "Australia/Perth": "AU", "Australia/Adelaide": "AU",
+          "Australia/Hobart": "AU", "Australia/Darwin": "AU",
+          "Pacific/Auckland": "NZ", "Africa/Lagos": "NG",
+          "Africa/Johannesburg": "ZA", "Africa/Nairobi": "KE",
+          "Africa/Cairo": "EG", "Africa/Accra": "GH"
+        };
+        var qCountry = document.getElementById("qCountry");
+        var dialByCc = {};
+        function flagEmoji(cc) {
+          return String.fromCodePoint(
+            0x1F1E6 + cc.charCodeAt(0) - 65,
+            0x1F1E6 + cc.charCodeAt(1) - 65
+          );
+        }
+        COUNTRY_CODES.forEach(function (c) {
+          dialByCc[c[0]] = c[2];
+          var opt = document.createElement("option");
+          opt.value = c[0];
+          opt.textContent = flagEmoji(c[0]) + " +" + c[2];
+          opt.title = c[1] + " +" + c[2];
+          qCountry.appendChild(opt);
+        });
+        function detectCountry() {
+          var tz = "";
+          try {
+            tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+          } catch (e) { /* detection is a convenience, never a blocker */ }
+          if (tz && TZ_COUNTRY[tz]) return TZ_COUNTRY[tz];
+          if (tz.indexOf("Australia/") === 0) return "AU";
+          var langs = navigator.languages || [navigator.language || ""];
+          for (var i = 0; i < langs.length; i++) {
+            var parts = String(langs[i]).split(/[-_]/);
+            for (var j = 1; j < parts.length; j++) {
+              var cc = parts[j].toUpperCase();
+              if (/^[A-Z]{2}$/.test(cc) && dialByCc[cc]) return cc;
+            }
+          }
+          return "US";
+        }
+        qCountry.value = detectCountry();
+
+        function fullPhone() {
+          var code = dialByCc[qCountry.value] || "1";
+          var digits = qPhone.value.replace(/\D/g, "");
+          if (!digits) return "";
+          if (digits.indexOf("00" + code) === 0) digits = digits.slice(2);
+          if (digits.indexOf(code) === 0 && digits.length > code.length + 6) {
+            return "+" + digits;
+          }
+          digits = digits.replace(/^0+/, "");
+          return "+" + code + digits;
+        }
+
+        function wordCount(v) {
+          v = v.trim();
+          return v ? v.split(/\s+/).length : 0;
+        }
+
+        function questChecks() {
+          return [
+            { ok: qIg.value.trim().length > 0, el: wrapIg },
+            { ok: !!pillState.situation, el: pillWraps.situation },
+            { ok: !!pillState.profession, el: pillWraps.profession },
+            { ok: wordCount(qPrompt.value) >= 3, el: wrapPrompt },
+            { ok: wordCount(qTried.value) >= 3, el: wrapTried },
+            { ok: !!pillState.budget, el: pillWraps.budget },
+            { ok: !!pillState.timing, el: pillWraps.timing },
+            { ok: qPhone.value.trim().length > 0, el: wrapPhone },
+            { ok: ackChecked, el: ackRow }
+          ];
+        }
+
+        function updateConfirm() {
+          var allOk = questChecks().every(function (c) { return c.ok; });
+          finalBtn.classList.toggle("locked", !allOk);
+          finalBtn.setAttribute("aria-disabled", allOk ? "false" : "true");
+        }
+
+        [qIg, qPhone, qPrompt, qTried].forEach(function (input) {
+          input.addEventListener("input", function () {
+            input.closest(".field").classList.remove("needs");
+            updateConfirm();
+          });
+        });
+
+        ackRow.addEventListener("click", function () {
+          ackChecked = ackRow.classList.toggle("checked");
+          ackRow.setAttribute("aria-pressed", ackChecked ? "true" : "false");
+          ackRow.classList.remove("needs");
+          haptic(10);
+          updateConfirm();
+        });
+
+        editLink.addEventListener("click", function () {
+          showStep("form", true);
+        });
+
+        finalBtn.addEventListener("click", function () {
+          var checks = questChecks();
+          for (var i = 0; i < checks.length; i++) {
+            if (!checks[i].ok) {
+              var el = checks[i].el;
+              el.classList.remove("needs");
+              void el.offsetWidth;
+              el.classList.add("needs");
+              el.scrollIntoView({
+                behavior: reduceMotion ? "auto" : "smooth",
+                block: "center"
+              });
+              haptic(10);
+              setTimeout(function () { el.classList.remove("needs"); }, 2000);
+              return;
+            }
+          }
+          // All checks passed — fire the Lead Save again with the phone
+          // filled (alongside, never blocking), then POST the Book Call.
+          // The redirect to the GHL funnel confirmation page fires ONLY
+          // after the Book Call POST resolves successfully, carrying the
+          // visitor's first name and the recap card's slot string. If
+          // the POST fails, he stays on this page in its current state
+          // and can try again; validation failures returned above and
+          // never reach this point.
+          if (finalBtn.dataset.submitting === "1") return;
+          finalBtn.dataset.submitting = "1";
+          var fullName = visitorName || recapName.textContent.trim();
+          var email = visitorEmail || recapEmail.textContent.trim();
+          var parts = splitName(fullName);
+          var phone = fullPhone();
+          fireLeadSave(email, fullName, phone);
+          var payload = {
+            email: email,
+            name: fullName,
+            firstName: parts.firstName,
+            lastName: parts.lastName,
+            phone: phone,
+            slotISO: selectedSlot.toISOString(),
+            slotStart: slotStartET(selectedSlot),
+            igUsername: qIg.value.trim(),
+            situation: pillState.situation,
+            profession: pillState.profession,
+            prompted: qPrompt.value.trim(),
+            tried: qTried.value.trim(),
+            budget: pillState.budget,
+            start: pillState.timing,
+            anythingElse: qNote.value.trim()
+          };
+          postJSON(BOOK_CALL_URL, payload)
+            .then(function (res) {
+              if (!res || !res.ok) throw new Error("book call post failed");
+              doneWhen.textContent = slotWhen();
+              window.location.href =
+                CONFIRM_URL +
+                "?name=" + encodeURIComponent(parts.firstName) +
+                "&when=" + encodeURIComponent(recapSlot.textContent);
+            })
+            .catch(function () {
+              finalBtn.dataset.submitting = "";
+            });
+        });
+
+        updateConfirm();
+        updateStickyPick();
+        updateStickyVisibility();
+
+        renderDays();
+
+        // "More dates" rows for a live re-render: the two local days
+        // after the last day with open times, in the same shape as the
+        // embedded snapshot's rows.
+        function renderMoreList() {
+          moreList.innerHTML = "";
+          if (!groups.length) return;
+          var last = groups[groups.length - 1].date;
+          for (var i = 1; i <= 2; i++) {
+            var d = new Date(last.getTime());
+            d.setDate(d.getDate() + i);
+            var row = document.createElement("div");
+            row.className = "more-day";
+            var nm = document.createElement("span");
+            nm.className = "md-name";
+            nm.textContent = dayHeading(d);
+            var st = document.createElement("span");
+            st.className = "md-state";
+            st.textContent = "No times open yet";
+            row.appendChild(nm);
+            row.appendChild(st);
+            moreList.appendChild(row);
+          }
+          var note = document.createElement("p");
+          note.className = "more-note";
+          note.textContent = "No times open yet — new times open daily.";
+          moreList.appendChild(note);
+        }
+
+        // Live slots feed: on load, fetch the published feed and, if it
+        // returns usable future slots, re-render the day cards from it
+        // — replacing the embedded snapshot. If the fetch fails or
+        // returns nothing usable, the snapshot rendering above stands.
+        // A visitor who has already started picking is never disturbed.
+        try {
+          fetch(SLOTS_FEED_URL + "?v=" + Date.now())
+            .then(function (res) {
+              if (!res.ok) throw new Error("slots feed " + res.status);
+              return res.json();
+            })
+            .then(function (data) {
+              if (!data || !Array.isArray(data.slots)) return;
+              var now = Date.now();
+              var future = data.slots.filter(function (iso) {
+                var t = new Date(iso).getTime();
+                return !isNaN(t) && t > now;
+              });
+              if (!future.length) return;
+              if (dayPicked || currentStep !== "pick") return;
+              var fresh = buildGroups(future);
+              if (!fresh.length) return;
+              groups = fresh;
+              selectedSlot = null;
+              slotArea.classList.remove("open");
+              pickSummary.classList.remove("show");
+              chipsEl.innerHTML = "";
+              moreList.classList.remove("open");
+              moreToggle.setAttribute("aria-expanded", "false");
+              moreToggle.textContent = "More dates ↓";
+              renderDays();
+              renderMoreList();
+            })
+            .catch(function () { /* keep the embedded snapshot */ });
+        } catch (e) { /* keep the embedded snapshot */ }
+      })();
+    </script>
+    <script>
+      // Feelings bar: rotate the five feeling-quotes one at a time with a
+      // sequential fade — the current quote fades out completely (0.9s),
+      // a short calm beat of empty space follows, then the next quote
+      // fades in (0.9s). Quotes never overlap. Start-to-start rhythm
+      // stays ~8 seconds: 5.8s hold + 0.9s out + 0.4s beat + 0.9s in.
+      // With prefers-reduced-motion, the first quote stays static.
+      (function () {
+        var slides = document.querySelectorAll(".feeling-slide");
+        if (!slides.length) return;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        var i = 0;
+        var HOLD_MS = 5800;
+        var FADE_MS = 900;
+        var BEAT_MS = 400;
+        function scheduleNext() {
+          setTimeout(function () {
+            // Fade the current quote out completely.
+            slides[i].classList.remove("is-active");
+            slides[i].setAttribute("aria-hidden", "true");
+            setTimeout(function () {
+              // After the fade-out plus the empty beat, fade the next in.
+              i = (i + 1) % slides.length;
+              slides[i].classList.add("is-active");
+              slides[i].setAttribute("aria-hidden", "false");
+              // Wait for the fade-in to finish, then hold the next quote.
+              setTimeout(scheduleNext, FADE_MS);
+            }, FADE_MS + BEAT_MS);
+          }, HOLD_MS);
+        }
+        scheduleNext();
+      })();
+    </script>
+  </body>
+</html>
