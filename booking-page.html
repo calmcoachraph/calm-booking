@@ -2105,6 +2105,9 @@
           recapEmail.textContent = email;
           recapSlot.textContent = slotWhen();
           showStep("almost");
+          // Re-sync the Confirm state the moment step 3 opens, from the
+          // live field values — never from state carried over.
+          updateConfirm();
         });
 
         // Questionnaire (step 3): Raph's dictated final version — exact
@@ -2144,7 +2147,7 @@
             id: "pgBudget",
             key: "budget",
             mount: "mountBudget",
-            label: "This is a 1-to-1 private leadership program. If we're the right fit for each other, what is the monthly budget range that works for you?",
+            label: "This is a 1-to-1 private leadership program. If we're the right fit for each other in solving the problem you mentioned above. What's the monthly investment range that works for you?",
             options: [
               "$1K–$2K",
               "$2K–$4K",
@@ -2155,7 +2158,7 @@
             id: "pgTiming",
             key: "timing",
             mount: "mountTiming",
-            label: "If we're the right match, how soon are you looking to start?",
+            label: "If we're the right match to solve the problem you mentioned above, how soon would you like to start?",
             options: [
               "Right away.",
               "Within the next 7 days.",
@@ -2371,18 +2374,21 @@
           return "+" + code + digits;
         }
 
-        function wordCount(v) {
-          v = v.trim();
-          return v ? v.split(/\s+/).length : 0;
-        }
-
+        // Required means answered — nothing more. There is NO minimum
+        // length or word count on any answer: the previous build
+        // silently demanded a multi-word minimum on the two long-text
+        // answers, so a man could fill every asterisked field, check
+        // the box, and still face a CONFIRM button that never enabled,
+        // with no hint anywhere about why and no request ever firing
+        // (the Oct 28 silent-Confirm failure). Any non-empty answer
+        // counts; the optional "anything else" field is not checked.
         function questChecks() {
           return [
             { ok: qIg.value.trim().length > 0, el: wrapIg },
             { ok: !!pillState.situation, el: pillWraps.situation },
             { ok: !!pillState.profession, el: pillWraps.profession },
-            { ok: wordCount(qPrompt.value) >= 3, el: wrapPrompt },
-            { ok: wordCount(qTried.value) >= 3, el: wrapTried },
+            { ok: qPrompt.value.trim().length > 0, el: wrapPrompt },
+            { ok: qTried.value.trim().length > 0, el: wrapTried },
             { ok: !!pillState.budget, el: pillWraps.budget },
             { ok: !!pillState.timing, el: pillWraps.timing },
             { ok: qPhone.value.trim().length > 0, el: wrapPhone },
@@ -2397,10 +2403,18 @@
         }
 
         [qIg, qPhone, qPrompt, qTried].forEach(function (input) {
-          input.addEventListener("input", function () {
-            input.closest(".field").classList.remove("needs");
+          function sync() {
+            var wrap = input.closest(".field");
+            if (wrap) wrap.classList.remove("needs");
             updateConfirm();
-          });
+          }
+          // Listen on every channel a value can change through —
+          // typing, paste, autofill, and programmatic fill — so the
+          // validator state can never silently drift from what's
+          // actually in the fields.
+          input.addEventListener("input", sync);
+          input.addEventListener("change", sync);
+          input.addEventListener("keyup", sync);
         });
 
         ackRow.addEventListener("click", function () {
