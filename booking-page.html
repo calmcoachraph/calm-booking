@@ -1087,25 +1087,51 @@
       .quest .pill:not(.selected):hover { border-color: #3a3a3a; }
 
       /* ---------- Required asterisk + phone dial code ---------- */
-      .req {
-        color: var(--gold);
+      /* One rule for every required asterisk, everywhere: gold.
+         !important + the label-scoped selectors keep the gold even
+         where a host page's styles (funnel embed) try to repaint
+         spans inside labels back to the label colour. */
+      .req,
+      .field label .req,
+      .pg-label .req,
+      label .req,
+      .quest .req {
+        color: #c9a35f !important;
+        color: var(--gold) !important;
         font-weight: 700;
       }
 
+      /* Step 3 header: the word "not" pops in gold */
+      .not-gold,
+      #almostTitle .not-gold {
+        color: #c9a35f;
+        color: var(--gold);
+      }
+
+      /* Phone row — swapped proportions: the country selector is the
+         compact control (flag + dial code only) and the number he
+         actually types gets the wide share of the row. */
       .phone-row {
         display: flex;
         gap: 8px;
+        width: 100%;
       }
 
       .phone-row select {
-        flex: none;
+        flex: 0 0 98px;
+        width: 98px;
+        max-width: 98px;
+        min-width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         font-family: inherit;
         font-size: 16px;
         color: var(--cream);
         background: var(--surface);
         border: 1px solid var(--border-2);
         border-radius: 8px;
-        padding: 14px 10px;
+        padding: 14px 8px;
         cursor: pointer;
       }
 
@@ -1118,6 +1144,15 @@
         flex: 1 1 auto;
         width: auto;
         min-width: 0;
+      }
+
+      @media (max-width: 480px) {
+        .phone-row select {
+          flex-basis: 88px;
+          width: 88px;
+          max-width: 88px;
+          padding: 14px 6px;
+        }
       }
 
       .quest .field select {
@@ -1173,7 +1208,8 @@
         transition: opacity 0.15s ease;
       }
 
-      /* ---------- Feelings bar (under the booking section) ---------- */
+      /* ---------- Feelings bar (persistent, inside the booking block
+         directly beneath the stage area — present under every stage) ---------- */
       .feelings {
         margin-top: 48px;
         padding-top: 32px;
@@ -1440,7 +1476,7 @@
 
         <!-- Step 3: almost done -->
         <div class="almost-area" id="almostStep">
-          <h2 id="almostTitle">Your call is not confirmed yet.</h2>
+          <h2 id="almostTitle">Your call is <span class="not-gold">not</span> confirmed yet.</h2>
           <p class="almost-note">Last step.</p>
           <p class="almost-sub">Help me get to know a bit about you before we meet.</p>
           <div class="recap-card">
@@ -1501,36 +1537,41 @@
           <p class="done-line">Your confirmation and Zoom link are on the way to your email.</p>
           <p class="done-sign">— Coach Raph</p>
         </div>
-      </section>
 
-      <!-- 8. Feelings bar -->
-      <section class="feelings" aria-label="Words from men who have worked with Coach Raph">
-        <p class="feelings-lead">Maybe this can be you too</p>
-        <div class="feelings-rotator" id="feelingsRotator">
-          <figure class="feeling-slide is-active">
-            <blockquote class="feeling-quote">&ldquo;It&rsquo;s been 10 days and I&rsquo;ve never felt this consistent level of calm.&rdquo;</blockquote>
-            <figcaption class="feeling-desc">Dubai 🇦🇪 &middot; Married 2 years</figcaption>
-          </figure>
-          <figure class="feeling-slide" aria-hidden="true">
-            <blockquote class="feeling-quote">&ldquo;It feels like I&rsquo;m viewing the storm from the outside for the first time in my life.&rdquo;</blockquote>
-            <figcaption class="feeling-desc">CEO &amp; Founder &middot; USA 🇺🇸 &middot; Married 4 years</figcaption>
-          </figure>
-          <figure class="feeling-slide" aria-hidden="true">
-            <blockquote class="feeling-quote">&ldquo;I&rsquo;ve never felt this level of respect from my wife.&rdquo;</blockquote>
-            <figcaption class="feeling-desc">Canada 🇨🇦 &middot; Engaged</figcaption>
-          </figure>
-          <figure class="feeling-slide" aria-hidden="true">
-            <blockquote class="feeling-quote">&ldquo;It&rsquo;s almost like she&rsquo;s witnessing a different version of me.&rdquo;</blockquote>
-            <figcaption class="feeling-desc">Senior HR Executive &middot; Poland 🇵🇱 &middot; Married 6 years</figcaption>
-          </figure>
-          <figure class="feeling-slide" aria-hidden="true">
-            <blockquote class="feeling-quote">&ldquo;Chris, you&rsquo;re so calm.&rdquo;</blockquote>
-            <figcaption class="feeling-desc">Physician &middot; Australia 🇦🇺 &middot; Married 17 years</figcaption>
-          </figure>
+        <!-- Feelings bar — ONE persistent element inside the booking block,
+             directly beneath the stage area (under the day/time answers and
+             Continue, under name/email and Continue, under the questionnaire).
+             It is a sibling of every stage, never inside one, so as stages
+             swap above it the bar stays in his indirect line of sight the
+             whole way through. Existing styling and rotation unchanged. -->
+        <div class="feelings" aria-label="Words from men who have worked with Coach Raph">
+          <p class="feelings-lead">Maybe this can be you too</p>
+          <div class="feelings-rotator" id="feelingsRotator">
+            <figure class="feeling-slide is-active">
+              <blockquote class="feeling-quote">&ldquo;It&rsquo;s been 10 days and I&rsquo;ve never felt this consistent level of calm.&rdquo;</blockquote>
+              <figcaption class="feeling-desc">Dubai 🇦🇪 &middot; Married 2 years</figcaption>
+            </figure>
+            <figure class="feeling-slide" aria-hidden="true">
+              <blockquote class="feeling-quote">&ldquo;It feels like I&rsquo;m viewing the storm from the outside for the first time in my life.&rdquo;</blockquote>
+              <figcaption class="feeling-desc">CEO &amp; Founder &middot; USA 🇺🇸 &middot; Married 4 years</figcaption>
+            </figure>
+            <figure class="feeling-slide" aria-hidden="true">
+              <blockquote class="feeling-quote">&ldquo;I&rsquo;ve never felt this level of respect from my wife.&rdquo;</blockquote>
+              <figcaption class="feeling-desc">Canada 🇨🇦 &middot; Engaged</figcaption>
+            </figure>
+            <figure class="feeling-slide" aria-hidden="true">
+              <blockquote class="feeling-quote">&ldquo;It&rsquo;s almost like she&rsquo;s witnessing a different version of me.&rdquo;</blockquote>
+              <figcaption class="feeling-desc">Senior HR Executive &middot; Poland 🇵🇱 &middot; Married 6 years</figcaption>
+            </figure>
+            <figure class="feeling-slide" aria-hidden="true">
+              <blockquote class="feeling-quote">&ldquo;Chris, you&rsquo;re so calm.&rdquo;</blockquote>
+              <figcaption class="feeling-desc">Physician &middot; Australia 🇦🇺 &middot; Married 17 years</figcaption>
+            </figure>
+          </div>
         </div>
       </section>
 
-      <!-- 9. Final door line — sits directly under the feelings bar -->
+      <!-- 9. Final door line — sits under the booking block -->
       <p class="final-door"><button type="button" class="final-door-link" id="finalDoorBtn">Book a private call.</button></p>
 
       <!-- 10. Footer -->
@@ -1713,17 +1754,17 @@
           } catch (e) { /* haptics are a bonus, never a blocker */ }
         }
 
-        // Picking a day or a time must never move the page: the selection
-        // and its summary surface in place, exactly where he is standing.
-        // scrollIntoView is banned at the pick moment — when this markup
-        // is embedded in a host page (the funnel), it scrolls every
-        // scrollable ancestor, not just this window, and throws him back
-        // to the top of the page. As a second line of defence, capture
-        // the scroll position before the pick's DOM changes and, if a
-        // host reflow / focus shift / resize still shoves the position
-        // sharply upward in the moments right after, put it back. Only
-        // a large upward jump is corrected, so his own scrolling —
-        // including scrolling down to the summary — is never fought.
+        // Guided auto-advance at the pick moment: picking a DAY calmly
+        // glides him to the TIMES, picking a TIME calmly glides him to
+        // the summary + Continue — no manual scrolling, no work left
+        // for him. scrollIntoView stays banned — when this markup is
+        // embedded in a host page (the funnel), it scrolls every
+        // scrollable ancestor, not just this window, and throws him
+        // back to the top. All motion here is a window-level scrollTo
+        // computed from the target's position (the same safe technique
+        // the stage transitions use), clamped so it can never land
+        // above the booking block or at the page top. If the target
+        // is already comfortably in view, nothing moves — no yank.
         function captureScrollY() {
           return window.scrollY || document.documentElement.scrollTop || 0;
         }
@@ -1741,6 +1782,37 @@
           if ("requestAnimationFrame" in window) requestAnimationFrame(restore);
           setTimeout(restore, 80);
           setTimeout(restore, 250);
+        }
+
+        function bookTopY() {
+          if (!bookSection) return 0;
+          var r = bookSection.getBoundingClientRect();
+          var y = captureScrollY() + r.top - 12;
+          return y > 0 ? y : 0;
+        }
+
+        function guidedAdvanceTo(el) {
+          if (!el) return;
+          function run() {
+            var rect = el.getBoundingClientRect();
+            // Already comfortably in front of him — leave him be.
+            if (rect.top >= 64 && rect.bottom <= window.innerHeight - 12) return;
+            var y = captureScrollY() + rect.top - 20;
+            var minY = bookTopY();
+            if (y < minY) y = minY;
+            if (y < 0) y = 0;
+            try {
+              window.scrollTo({ top: y, left: 0, behavior: reduceMotion ? "auto" : "smooth" });
+            } catch (e) {
+              window.scrollTo(0, y);
+            }
+          }
+          // Wait two frames so the just-opened area has laid out.
+          if ("requestAnimationFrame" in window) {
+            requestAnimationFrame(function () { requestAnimationFrame(run); });
+          } else {
+            setTimeout(run, 30);
+          }
         }
 
         // Deliberate navigation (a CTA tap, a step change, a validation
@@ -1857,7 +1929,6 @@
         }
 
         function selectDay(g) {
-          var yBeforePick = captureScrollY();
           selectedSlot = null;
           dayPicked = true;
           updateStickyPick();
@@ -1872,7 +1943,8 @@
           renderChips(g);
           pickSummary.classList.remove("show");
           slotArea.classList.add("open");
-          guardScrollPosition(yBeforePick);
+          // Calmly push him forward: glide the times into view for him.
+          guidedAdvanceTo(slotArea);
         }
 
         function renderChips(g) {
@@ -1899,7 +1971,6 @@
         }
 
         function selectSlot(d, chip) {
-          var yBeforePick = captureScrollY();
           selectedSlot = d;
           updateStickyPick();
           haptic(10);
@@ -1914,7 +1985,8 @@
             "Your private call — " + dayHeading(d) + ", " + timeFmt.format(d) +
             " your time · 30 minutes · Zoom";
           pickSummary.classList.add("show");
-          guardScrollPosition(yBeforePick);
+          // Calmly push him forward: glide the summary + Continue into view.
+          guidedAdvanceTo(pickSummary);
         }
 
         var stepEls = { pick: pickStep, form: formStep, almost: almostStep, done: doneStep };
@@ -2016,7 +2088,19 @@
           visitorName = name;
           visitorEmail = email;
           fireLeadSave(email, name, "");
-          almostTitle.textContent = name.split(/\s+/)[0] + ", your call is not confirmed yet.";
+          // "{FirstName}, your call is not confirmed yet." — built as
+          // nodes so the first name stays plain text and only "not"
+          // carries the gold emphasis.
+          (function () {
+            var first = name.split(/\s+/)[0];
+            almostTitle.textContent = "";
+            almostTitle.appendChild(document.createTextNode(first + ", your call is "));
+            var notSpan = document.createElement("span");
+            notSpan.className = "not-gold";
+            notSpan.textContent = "not";
+            almostTitle.appendChild(notSpan);
+            almostTitle.appendChild(document.createTextNode(" confirmed yet."));
+          })();
           recapName.textContent = name;
           recapEmail.textContent = email;
           recapSlot.textContent = slotWhen();
@@ -2477,29 +2561,36 @@
       // stays ~8 seconds: 5.8s hold + 0.9s out + 0.4s beat + 0.9s in.
       // With prefers-reduced-motion, the first quote stays static.
       (function () {
-        var slides = document.querySelectorAll(".feeling-slide");
-        if (!slides.length) return;
+        // The single persistent feelings bar lives under the stage
+        // area inside the booking block; this loop rotates its quotes
+        // (and would rotate any rotator independently, never leaving
+        // one empty while another is active).
+        var rotators = document.querySelectorAll(".feelings-rotator");
+        if (!rotators.length) return;
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-        var i = 0;
         var HOLD_MS = 5800;
         var FADE_MS = 900;
         var BEAT_MS = 400;
-        function scheduleNext() {
-          setTimeout(function () {
-            // Fade the current quote out completely.
-            slides[i].classList.remove("is-active");
-            slides[i].setAttribute("aria-hidden", "true");
-            setTimeout(function () {
-              // After the fade-out plus the empty beat, fade the next in.
-              i = (i + 1) % slides.length;
-              slides[i].classList.add("is-active");
-              slides[i].setAttribute("aria-hidden", "false");
-              // Wait for the fade-in to finish, then hold the next quote.
-              setTimeout(scheduleNext, FADE_MS);
-            }, FADE_MS + BEAT_MS);
-          }, HOLD_MS);
+        for (var r = 0; r < rotators.length; r++) {
+          (function (rotator) {
+            var slides = rotator.querySelectorAll(".feeling-slide");
+            if (slides.length < 2) return;
+            var i = 0;
+            function scheduleNext() {
+              setTimeout(function () {
+                slides[i].classList.remove("is-active");
+                slides[i].setAttribute("aria-hidden", "true");
+                setTimeout(function () {
+                  i = (i + 1) % slides.length;
+                  slides[i].classList.add("is-active");
+                  slides[i].setAttribute("aria-hidden", "false");
+                  setTimeout(scheduleNext, FADE_MS);
+                }, FADE_MS + BEAT_MS);
+              }, HOLD_MS);
+            }
+            scheduleNext();
+          })(rotators[r]);
         }
-        scheduleNext();
       })();
     </script>
   </body>
