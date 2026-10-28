@@ -1486,6 +1486,7 @@
             <span class="ack-text">I confirm I've read and understand.</span>
           </button>
           <button type="button" class="gold-btn locked" id="finalBtn" aria-disabled="true">Confirm my call</button>
+          <button type="button" class="back-link" id="almostBackLink">← Back to your details</button>
         </div>
 
         <!-- Step 4: booked -->
@@ -1712,6 +1713,56 @@
           } catch (e) { /* haptics are a bonus, never a blocker */ }
         }
 
+        // Picking a day or a time must never move the page: the selection
+        // and its summary surface in place, exactly where he is standing.
+        // scrollIntoView is banned at the pick moment — when this markup
+        // is embedded in a host page (the funnel), it scrolls every
+        // scrollable ancestor, not just this window, and throws him back
+        // to the top of the page. As a second line of defence, capture
+        // the scroll position before the pick's DOM changes and, if a
+        // host reflow / focus shift / resize still shoves the position
+        // sharply upward in the moments right after, put it back. Only
+        // a large upward jump is corrected, so his own scrolling —
+        // including scrolling down to the summary — is never fought.
+        function captureScrollY() {
+          return window.scrollY || document.documentElement.scrollTop || 0;
+        }
+
+        function guardScrollPosition(y) {
+          function restore() {
+            if (captureScrollY() < y - 120) {
+              try {
+                window.scrollTo({ top: y, left: 0, behavior: "instant" });
+              } catch (e) {
+                window.scrollTo(0, y);
+              }
+            }
+          }
+          if ("requestAnimationFrame" in window) requestAnimationFrame(restore);
+          setTimeout(restore, 80);
+          setTimeout(restore, 250);
+        }
+
+        // Deliberate navigation (a CTA tap, a step change, a validation
+        // nudge) anchors with window.scrollTo computed from the target's
+        // position — never scrollIntoView, which also scrolls ancestor
+        // containers of an embedding host page and can land him at the
+        // host's top instead of at the booking block.
+        function scrollWindowToEl(el, center) {
+          if (!el) return;
+          var rect = el.getBoundingClientRect();
+          var y = captureScrollY() + rect.top - 12;
+          if (center) {
+            y = captureScrollY() + rect.top - Math.max(0, (window.innerHeight - rect.height) / 2);
+          }
+          if (y < 0) y = 0;
+          try {
+            window.scrollTo({ top: y, left: 0, behavior: reduceMotion ? "auto" : "smooth" });
+          } catch (e) {
+            window.scrollTo(0, y);
+          }
+        }
+
         function dayHeading(d) {
           return dowFmt.format(d) + ", " + mdFmt.format(d);
         }
@@ -1724,10 +1775,7 @@
           // The flow's current step is already the visible one inside the
           // booking section, so scrolling to the section lands him exactly
           // where he left off — no state is touched, only position.
-          bookSection.scrollIntoView({
-            behavior: reduceMotion ? "auto" : "smooth",
-            block: "start"
-          });
+          scrollWindowToEl(bookSection, false);
         }
 
         function updateStickyPick() {
@@ -1809,6 +1857,7 @@
         }
 
         function selectDay(g) {
+          var yBeforePick = captureScrollY();
           selectedSlot = null;
           dayPicked = true;
           updateStickyPick();
@@ -1823,7 +1872,7 @@
           renderChips(g);
           pickSummary.classList.remove("show");
           slotArea.classList.add("open");
-          slotArea.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          guardScrollPosition(yBeforePick);
         }
 
         function renderChips(g) {
@@ -1850,6 +1899,7 @@
         }
 
         function selectSlot(d, chip) {
+          var yBeforePick = captureScrollY();
           selectedSlot = d;
           updateStickyPick();
           haptic(10);
@@ -1864,7 +1914,7 @@
             "Your private call — " + dayHeading(d) + ", " + timeFmt.format(d) +
             " your time · 30 minutes · Zoom";
           pickSummary.classList.add("show");
-          pickSummary.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          guardScrollPosition(yBeforePick);
         }
 
         var stepEls = { pick: pickStep, form: formStep, almost: almostStep, done: doneStep };
@@ -1883,19 +1933,31 @@
           progressFill.style.width = stepProgress[step];
           if (!isBack) haptic(15);
           function swap() {
-            if (from === pickStep) { from.style.display = "none"; }
-            else { from.classList.remove("open"); }
-            if (to === pickStep) { to.style.display = ""; }
-            else { to.classList.add("open"); }
+            // One stage at a time, strictly: hide every stage, then show
+            // only the target. A finished stage leaves nothing behind in
+            // the block but its slim recap inside the next stage (the
+            // picked-time line above the details form, the recap card
+            // above the questionnaire) — never its full section stacked
+            // under the new one.
+            for (var key in stepEls) {
+              var stageEl = stepEls[key];
+              if (stageEl === to) {
+                if (stageEl === pickStep) { stageEl.style.display = ""; }
+                else { stageEl.classList.add("open"); }
+              } else {
+                if (stageEl === pickStep) { stageEl.style.display = "none"; }
+                else { stageEl.classList.remove("open"); }
+              }
+            }
             if (!reduceMotion) {
               to.classList.remove("step-enter");
               void to.offsetWidth;
               to.classList.add("step-enter");
             }
-            bookSection.scrollIntoView({
-              behavior: reduceMotion ? "auto" : "smooth",
-              block: "start"
-            });
+            // Anchor the transition at the top of the booking block —
+            // in this window only, so an embedding host page is never
+            // dragged to its own top.
+            scrollWindowToEl(bookSection, false);
           }
           if (reduceMotion) {
             swap();
@@ -2269,6 +2331,13 @@
           showStep("form", true);
         });
 
+        var almostBackLink = document.getElementById("almostBackLink");
+        if (almostBackLink) {
+          almostBackLink.addEventListener("click", function () {
+            showStep("form", true);
+          });
+        }
+
         finalBtn.addEventListener("click", function () {
           var checks = questChecks();
           for (var i = 0; i < checks.length; i++) {
@@ -2277,10 +2346,7 @@
               el.classList.remove("needs");
               void el.offsetWidth;
               el.classList.add("needs");
-              el.scrollIntoView({
-                behavior: reduceMotion ? "auto" : "smooth",
-                block: "center"
-              });
+              scrollWindowToEl(el, true);
               haptic(10);
               setTimeout(function () { el.classList.remove("needs"); }, 2000);
               return;
@@ -2385,7 +2451,7 @@
                 return !isNaN(t) && t > now;
               });
               if (!future.length) return;
-              if (dayPicked || currentStep !== "pick") return;
+              if (dayPicked || selectedSlot || currentStep !== "pick") return;
               var fresh = buildGroups(future);
               if (!fresh.length) return;
               groups = fresh;
