@@ -2473,6 +2473,7 @@
             phone: phone,
             slotISO: selectedSlot.toISOString(),
             slotStart: slotStartET(selectedSlot),
+            slotEnd: new Date(selectedSlot.getTime() + 30 * 60 * 1000).toISOString(),
             igUsername: qIg.value.trim(),
             situation: pillState.situation,
             profession: pillState.profession,
