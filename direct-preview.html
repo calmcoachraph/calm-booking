@@ -865,7 +865,7 @@
 
       .progress-fill {
         height: 100%;
-        width: 34%;
+        width: 25%;
         background: var(--gold);
         transition: width 0.45s ease;
       }
@@ -1408,7 +1408,7 @@
       <!-- 7. Booking flow -->
       <section class="book" id="book" aria-label="Book your private call">
         <div class="progress" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
-        <p class="step-hint" id="stepHint">Step 1 of 3</p>
+        <p class="step-hint" id="stepHint">25% complete</p>
 
         <!-- Step 1: pick a day -->
         <div id="dayStep">
@@ -1979,8 +1979,8 @@
         }
 
         var stepEls = { day: dayStep, time: timeStep, form: formStep, quest: questStep, done: doneStep };
-        var stepProgress = { day: "34%", form: "67%", quest: "100%", done: "100%" };
-        var stepHints = { day: "Step 1 of 3", form: "Step 2 of 3", quest: "Step 3 of 3", done: "" };
+        var stepProgress = { day: "25%", form: "50%", quest: "75%", done: "100%" };
+        var stepHints = { day: "25% complete", form: "50% complete", quest: "75% complete", done: "" };
         var currentStep = "day";
 
         function showStep(step, isBack) {
