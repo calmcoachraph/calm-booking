@@ -543,6 +543,7 @@
       }
 
       .slot-area { display: none; margin-top: 52px; }
+      #dayStep .slot-area { margin-top: 26px; }
 
       .slot-area.open { display: block; }
 
@@ -864,7 +865,7 @@
 
       .progress-fill {
         height: 100%;
-        width: 25%;
+        width: 34%;
         background: var(--gold);
         transition: width 0.45s ease;
       }
@@ -1407,7 +1408,7 @@
       <!-- 7. Booking flow -->
       <section class="book" id="book" aria-label="Book your private call">
         <div class="progress" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
-        <p class="step-hint" id="stepHint">Step 1 of 4</p>
+        <p class="step-hint" id="stepHint">Step 1 of 3</p>
 
         <!-- Step 1: pick a day -->
         <div id="dayStep">
@@ -1416,6 +1417,12 @@
 
 
           <div class="day-cards" id="dayCards" role="group" aria-label="Choose a day"></div>
+
+          <div class="slot-area" id="slotArea" aria-live="polite">
+            <p class="slot-label" id="slotLabel"></p>
+            <p class="slot-dayline" id="slotDayline"></p>
+            <div class="chips" id="chips" role="group" aria-label="Choose a time"></div>
+          </div>
 
           <p class="tz-note tz-days" id="tzLine"></p>
 
@@ -1437,12 +1444,6 @@
 
         <!-- Step 2: pick a time -->
         <div class="stage-area" id="timeStep">
-          <div class="slot-area" id="slotArea" aria-live="polite">
-            <p class="slot-label" id="slotLabel"></p>
-            <p class="slot-dayline" id="slotDayline"></p>
-            <p class="tz-note">Times shown in your timezone.</p>
-            <div class="chips" id="chips" role="group" aria-label="Choose a time"></div>
-          </div>
           <button type="button" class="back-link" id="timeBackLink">← Pick a different day</button>
         </div>
 
@@ -1911,11 +1912,13 @@
             g.button = btn;
             dayCards.appendChild(btn);
           });
+          // Land with the first open day already picked, times showing.
+          if (groups.length && !dayPicked) selectDay(groups[0], true);
         }
 
-        function selectDay(g) {
+        function selectDay(g, isAuto) {
           selectedSlot = null;
-          dayPicked = true;
+          if (!isAuto) dayPicked = true;
           updateStickyPick();
           haptic(10);
           groups.forEach(function (x) {
@@ -1927,9 +1930,9 @@
           slotDayline.textContent = dayHeading(g.date);
           renderChips(g);
           slotArea.classList.add("open");
-          // One tap moves him forward: picking a day opens the times
-          // as their own step.
-          showStep("time");
+          // Bami style: the day is already picked and its times are
+          // already showing — tapping another day just swaps the times
+          // right here. His only job is to pick a time.
         }
 
         function renderChips(g) {
@@ -1976,8 +1979,8 @@
         }
 
         var stepEls = { day: dayStep, time: timeStep, form: formStep, quest: questStep, done: doneStep };
-        var stepProgress = { day: "25%", time: "50%", form: "75%", quest: "100%", done: "100%" };
-        var stepHints = { day: "Step 1 of 4", time: "Step 2 of 4", form: "Step 3 of 4", quest: "Step 4 of 4", done: "" };
+        var stepProgress = { day: "34%", form: "67%", quest: "100%", done: "100%" };
+        var stepHints = { day: "Step 1 of 3", form: "Step 2 of 3", quest: "Step 3 of 3", done: "" };
         var currentStep = "day";
 
         function showStep(step, isBack) {
@@ -2034,7 +2037,7 @@
         }
 
         backLink.addEventListener("click", function () {
-          showStep("time", true);
+          showStep("day", true);
         });
 
         var timeBackLink = document.getElementById("timeBackLink");
