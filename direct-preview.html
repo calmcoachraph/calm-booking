@@ -510,6 +510,8 @@
 
       .more-list.open { display: block; }
 
+      .more-cards { display: grid; gap: 12px; margin-top: 4px; }
+
       .more-day {
         display: flex;
         justify-content: space-between;
@@ -1430,138 +1432,11 @@
 
           <p class="tz-note tz-days" id="tzLine"></p>
 
-          <div class="more-dates">
-            <button type="button" class="more-toggle" id="moreToggle" aria-expanded="false">More dates ↓</button>
+          <div class="more-dates" id="moreDates">
+            <button class="more-toggle" id="moreToggle" type="button" aria-expanded="false">More dates ↓</button>
             <div class="more-list" id="moreList">
-              <div class="more-day">
-                <span class="md-name">Wednesday, October 28</span>
-                <span class="md-state">No times open yet</span>
-              </div>
-              <div class="more-day">
-                <span class="md-name">Thursday, October 29</span>
-                <span class="md-state">No times open yet</span>
-              </div>
-              <p class="more-note">No times open yet — new times open daily.</p>
+              <div class="more-cards" id="moreCards"></div>
             </div>
-          </div>
-        </div>
-
-        <!-- Step 2: pick a time -->
-        <div class="stage-area" id="timeStep">
-          <button type="button" class="back-link" id="timeBackLink">← Pick a different day</button>
-        </div>
-
-        <!-- Step 3: your details -->
-        <div class="form-area" id="formStep">
-          <h2 class="step-recap" id="formChosen"></h2>
-          <form id="bookForm" novalidate>
-            <div class="field">
-              <label for="fName">How should I address you?</label>
-              <input id="fName" name="name" type="text" autocomplete="name" placeholder="Full name" />
-            </div>
-            <div class="field">
-              <label for="fEmail">Where should I send the zoom link to meet with me?</label>
-              <input id="fEmail" name="email" type="email" autocomplete="email" placeholder="Best email" />
-            </div>
-            <div class="field" id="wrapPhone">
-              <label for="qPhone">Phone number <span class="req" aria-hidden="true">*</span></label>
-              <div class="phone-row">
-                <select id="qCountry" aria-label="Country dial code"></select>
-                <input id="qPhone" type="tel" placeholder="Best phone number" autocomplete="tel-national" />
-              </div>
-            </div>
-            <p class="form-error" id="formError" role="alert"></p>
-            <button type="submit" class="gold-btn">Continue</button>
-          </form>
-          <button type="button" class="back-link" id="backLink">← Pick a different time</button>
-        </div>
-
-        <!-- Step 4: about you -->
-        <div class="stage-area" id="questStep">
-          <h2 id="almostTitle">Your call is <span class="not-gold">not</span> confirmed yet.</h2>
-          <p class="almost-sub">Help me get to know a bit about you before we meet.</p>
-          <div class="recap-card">
-            <p class="recap-name" id="recapName"></p>
-            <p class="recap-line" id="recapEmail"></p>
-            <p class="recap-slot" id="recapSlot"></p>
-            <button type="button" class="edit-link" id="editLink">Edit</button>
-          </div>
-          <div class="quest">
-            <div class="field" id="wrapIg">
-              <label for="qIg">What is your Instagram handle? (ie. @calmcoachraph) <span class="req" aria-hidden="true">*</span></label>
-              <input id="qIg" type="text" placeholder="@username" autocomplete="off" />
-            </div>
-            <div class="pill-mount" id="mountSituation"></div>
-            <div class="pill-mount" id="mountProfession"></div>
-            <div class="field" id="wrapPrompt">
-              <label for="qPrompt">What's the main problem you're facing that you feel compelled to master your calm emotionally steady leadership now? <span class="req" aria-hidden="true">*</span></label>
-              <textarea id="qPrompt" rows="3" placeholder="Tell me in 1-2 sentences why you need to work on this skill in your marriage?"></textarea>
-            </div>
-            <div class="field" id="wrapTried">
-              <label for="qTried">I'm under the assumption you've tried other ways already to work through this. What did you try so far? And why do you believe it didn't work yet for you? <span class="req" aria-hidden="true">*</span></label>
-              <textarea id="qTried" rows="3" placeholder="Be honest here. We want to skip what didn't work and focus on what we need to succeed."></textarea>
-            </div>
-            <div class="pill-mount" id="mountBudget"></div>
-            <div class="pill-mount" id="mountTiming"></div>
-            <div class="field">
-              <label for="qNote">Is there anything else you'd like me to know before our call? (Optional)</label>
-              <textarea id="qNote" rows="2"></textarea>
-            </div>
-          </div>
-          <p class="review-line">Coach Raph will personally and privately review your answers before your call. If he believes he can't help based on your answers, your call will be cancelled.</p>
-          <button type="button" class="ack-row" id="ackRow" aria-pressed="false">
-            <span class="ack-box" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M4.5 12.5l5 5L19.5 7" stroke="#101010" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
-            <span class="ack-text">I confirm I've read and understand.</span>
-          </button>
-          <button type="button" class="gold-btn locked" id="finalBtn" aria-disabled="true">Confirm my call</button>
-          <button type="button" class="back-link" id="almostBackLink">← Back to your details</button>
-        </div>
-
-
-        <!-- Booked -->
-        <div class="done-area" id="doneStep">
-          <div class="check-ring" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M4.5 12.5l5 5L19.5 7" stroke="#c9a35f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <h2>You're booked.</h2>
-          <p class="done-when" id="doneWhen"></p>
-          <p class="done-line">Coach Raph will personally review your answers before your call.</p>
-          <p class="done-line">Find somewhere quiet for our call — this is a working conversation, not a sales pitch.</p>
-          <p class="done-line">Your confirmation and Zoom link are on the way to your email.</p>
-          <p class="done-sign">— Coach Raph</p>
-        </div>
-
-        <!-- Feelings bar — ONE persistent element inside the booking block,
-             directly beneath the stage area (under the day/time answers and
-             Continue, under name/email and Continue, under the questionnaire).
-             It is a sibling of every stage, never inside one, so as stages
-             swap above it the bar stays in his indirect line of sight the
-             whole way through. Existing styling and rotation unchanged. -->
-        <div class="feelings" aria-label="Words from men who have worked with Coach Raph">
-          <p class="feelings-lead">Maybe this can be you too</p>
-          <div class="feelings-rotator" id="feelingsRotator">
-            <figure class="feeling-slide is-active">
-              <blockquote class="feeling-quote">&ldquo;It&rsquo;s been 10 days and I&rsquo;ve never felt this consistent level of calm.&rdquo;</blockquote>
-              <figcaption class="feeling-desc">Dubai 🇦🇪 &middot; Married 2 years</figcaption>
-            </figure>
-            <figure class="feeling-slide" aria-hidden="true">
-              <blockquote class="feeling-quote">&ldquo;It feels like I&rsquo;m viewing the storm from the outside for the first time in my life.&rdquo;</blockquote>
-              <figcaption class="feeling-desc">CEO &amp; Founder &middot; USA 🇺🇸 &middot; Married 4 years</figcaption>
-            </figure>
-            <figure class="feeling-slide" aria-hidden="true">
-              <blockquote class="feeling-quote">&ldquo;I&rsquo;ve never felt this level of respect from my wife.&rdquo;</blockquote>
-              <figcaption class="feeling-desc">Canada 🇨🇦 &middot; Engaged</figcaption>
-            </figure>
-            <figure class="feeling-slide" aria-hidden="true">
-              <blockquote class="feeling-quote">&ldquo;It&rsquo;s almost like she&rsquo;s witnessing a different version of me.&rdquo;</blockquote>
-              <figcaption class="feeling-desc">Senior HR Executive &middot; Poland 🇵🇱 &middot; Married 6 years</figcaption>
-            </figure>
-            <figure class="feeling-slide" aria-hidden="true">
-              <blockquote class="feeling-quote">&ldquo;Chris, you&rsquo;re so calm.&rdquo;</blockquote>
-              <figcaption class="feeling-desc">Physician &middot; Australia 🇦🇺 &middot; Married 17 years</figcaption>
-            </figure>
           </div>
         </div>
       </section>
@@ -1896,7 +1771,8 @@
 
         function renderDays() {
           dayCards.innerHTML = "";
-          groups.forEach(function (g) {
+          moreCards.innerHTML = "";
+          groups.forEach(function (g, idx) {
             var btn = document.createElement("button");
             btn.type = "button";
             btn.className = "day-card";
@@ -1911,10 +1787,14 @@
 
             btn.appendChild(dow);
             btn.appendChild(dmd);
-            btn.addEventListener("click", function () { selectDay(g); });
+            btn.addEventListener("click", function () {
+              selectDay(g);
+              if (idx >= 2) scrollWindowToEl(slotArea, false);
+            });
             g.button = btn;
-            dayCards.appendChild(btn);
+            if (idx < 2) { dayCards.appendChild(btn); } else { moreCards.appendChild(btn); }
           });
+          moreDates.style.display = groups.length > 2 ? "" : "none";
           // Land with the first open day already picked, times showing.
           if (groups.length && !dayPicked) selectDay(groups[0], true);
         }
@@ -2051,6 +1931,8 @@
 
 
         var moreToggle = document.getElementById("moreToggle");
+        var moreCards = document.getElementById("moreCards");
+        var moreDates = document.getElementById("moreDates");
         var moreList = document.getElementById("moreList");
         moreToggle.addEventListener("click", function () {
           var open = moreList.classList.toggle("open");
