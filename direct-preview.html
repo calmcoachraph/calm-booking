@@ -2393,34 +2393,6 @@
 
         renderDays();
 
-        // "More dates" rows for a live re-render: the two local days
-        // after the last day with open times, in the same shape as the
-        // embedded snapshot's rows.
-        function renderMoreList() {
-          moreList.innerHTML = "";
-          if (!groups.length) return;
-          var last = groups[groups.length - 1].date;
-          for (var i = 1; i <= 2; i++) {
-            var d = new Date(last.getTime());
-            d.setDate(d.getDate() + i);
-            var row = document.createElement("div");
-            row.className = "more-day";
-            var nm = document.createElement("span");
-            nm.className = "md-name";
-            nm.textContent = dayHeading(d);
-            var st = document.createElement("span");
-            st.className = "md-state";
-            st.textContent = "No times open yet";
-            row.appendChild(nm);
-            row.appendChild(st);
-            moreList.appendChild(row);
-          }
-          var note = document.createElement("p");
-          note.className = "more-note";
-          note.textContent = "No times open yet — new times open daily.";
-          moreList.appendChild(note);
-        }
-
         // Live slots feed: on load, fetch the published feed and, if it
         // returns usable future slots, re-render the day cards from it
         // — replacing the embedded snapshot. If the fetch fails or
@@ -2451,7 +2423,6 @@
               moreToggle.setAttribute("aria-expanded", "false");
               moreToggle.textContent = "More dates ↓";
               renderDays();
-              renderMoreList();
             })
             .catch(function () { /* keep the embedded snapshot */ });
         } catch (e) { /* keep the embedded snapshot */ }
