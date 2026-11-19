@@ -1413,8 +1413,6 @@
 
       <!-- 7. Booking flow -->
       <section class="book" id="book" aria-label="Book your private call">
-        <div class="progress" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
-        <p class="step-hint" id="stepHint">25% complete</p>
 
         <!-- Step 1: pick a day -->
         <div id="dayStep">
@@ -1719,7 +1717,6 @@
         var backLink = document.getElementById("backLink");
         var doneWhen = document.getElementById("doneWhen");
         var bookSection = document.getElementById("book");
-        var progressFill = document.getElementById("progressFill");
         var almostTitle = document.getElementById("almostTitle");
         var recapName = document.getElementById("recapName");
         var recapEmail = document.getElementById("recapEmail");
@@ -1998,7 +1995,6 @@
             bookedDone = true;
             updateStickyVisibility();
           }
-          progressFill.style.width = stepProgress[step];
           if (stepHint) {
             stepHint.textContent = stepHints[step] || "";
             stepHint.style.display = step === "done" ? "none" : "";
